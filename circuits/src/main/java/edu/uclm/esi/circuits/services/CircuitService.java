@@ -5,17 +5,19 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import edu.uclm.esi.circuits.model.Circuit;
+
 @Service
 public class CircuitService {
-public Map<String, Object> createCircuit(int qubits) {
+public String createCircuit(Circuit circuit) {
 
-        Map<String, Object> circuit = new HashMap<>();
-
-        circuit.put("qubits", qubits);
-
-        // Add more logic to create the circuit as needed
-
-        return circuit;
+       return "hola";
 
     }
+
+    public String generateCode(Circuit circuit) {
+
+        return circuit.generateCode();
+ 
+     }
 }
