@@ -5,35 +5,29 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import edu.uclm.esi.circuits.dao.CircuitDao; // Adjust the package path if necessary
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.http.HttpStatus;
-import edu.uclm.esi.circuits.model.Circuit;
+import edu.uclm.esi.circuits.model.Circuit; // Adjust the package path if necessary
 
 @Service
 public class CircuitService {
 
-   @Autowired
-   private CircuitService service;
-   
-   @PostMapping("/createCircuit")
-   
-  public String createCircuit(@RequestBody Map<String, Object> body) {
-        if (!body.containsKey("table") || !body.containsKey("outputQubits")) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The request body must contain qubits and outputQubits");
-        }
-        return this.service.createCircuit(body);
+      @Autowired
+      private CircuitDao circuitDAO;
+      
+  public String createCircuit( Map<String, Object> body) {
+       return "hola";
       }
 
-   @PostMapping("/generateCode")
-
-   public String generateCode(@RequestParam(required=false) String name, @RequestBody Circuit circuit) {
-        if(name != null) {
-            circuit.setName(name);
+   public String generateCode( Circuit circuit) {
+      String code = circuit.generateCode();
+        if(circuit.getName() != null) {
+            this.circuitDAO.save(circuit);
         }
-      
-        return this.service.generateCode(name, circuit);  
+        return code;
   }
 }

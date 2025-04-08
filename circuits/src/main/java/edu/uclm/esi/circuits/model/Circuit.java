@@ -41,6 +41,17 @@ public class Circuit {
     public void setName(String name) {
         this.name = name;
     }
+    public String generateCode() {
+        // Generate code based on the table
+        StringBuilder code = new StringBuilder();
+        for (int i = 0; i < table.length; i++) {
+            for (int j = 0; j < table[i].length; j++) {
+                code.append("Qubit ").append(i).append(" -> Qubit ").append(table[i][j]).append("\n");
+            }
+        }
+        System.out.println(code.toString());
+        return code.toString();
+    }
     public Circuit() {
         this.id = java.util.UUID.randomUUID().toString();
     }
