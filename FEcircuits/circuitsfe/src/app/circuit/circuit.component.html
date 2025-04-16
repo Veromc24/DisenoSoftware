@@ -9,12 +9,23 @@
 <button (click)="buildMatrix()" [disabled]="inputQubits <= 0 || outputQubits <= 0">Build Matrix</button>
 <br>
 
+
+  
 <table *ngIf="matrix">
-  <tr *ngFor="let row of [].constructor(matrix.values.length); let i = index">
-    <td *ngFor="let value of [].constructor(matrix.values[i].length); let j = index">
-      {{ matrix.values[i][j] }}
+  <tr>
+    <td [attr.colspan]="inputQubits + outputQubits">
+      <button (click)="generateCode()">Generate Code</button>
+    </td>
+  </tr>
+  <tr *ngFor="let row of matrix.values; let rowNumber = index">
+    <td *ngFor="let value of row; let colNumber = index">
+      <span *ngIf="colNumber < inputQubits" style="color: blue">
+        {{ value }}
+      </span>
+      <span *ngIf="colNumber >= inputQubits" (click)="negate(rowNumber, colNumber)" style="color: red">
+        
+        {{ value }}
+      </span>
     </td>
   </tr>
 </table>
-
-
