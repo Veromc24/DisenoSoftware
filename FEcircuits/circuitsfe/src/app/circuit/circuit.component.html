@@ -1,1 +1,20 @@
-<p>circuit works!</p>
+<strong>Number of input qubits</strong>
+<input type="number" [(ngModel)]="inputQubits" min="1"> 
+<br>
+<strong>Number of input qubits</strong>
+<input type="number" [(ngModel)]="outputQubits" min="1">
+<br>
+
+
+<button (click)="buildMatrix()" [disabled]="inputQubits <= 0 || outputQubits <= 0">Build Matrix</button>
+<br>
+
+<table *ngIf="matrix">
+  <tr *ngFor="let row of [].constructor(matrix.values.length); let i = index">
+    <td *ngFor="let value of [].constructor(matrix.values[i].length); let j = index">
+      {{ matrix.values[i][j] }}
+    </td>
+  </tr>
+</table>
+
+
