@@ -5,7 +5,17 @@
   "projects": {
     "circuitsfe": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "standalone": false
+        },
+        "@schematics/angular:directive": {
+          "standalone": false
+        },
+        "@schematics/angular:pipe": {
+          "standalone": false
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -94,6 +104,6 @@
     }
   },
   "cli": {
-    "analytics": "7dd50de1-8247-428b-88b5-37c3747aca4a"
+    "analytics": false
   }
 }
