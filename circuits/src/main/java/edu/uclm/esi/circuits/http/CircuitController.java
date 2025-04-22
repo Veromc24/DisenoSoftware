@@ -22,7 +22,6 @@ public class CircuitController{
    private CircuitService service;
    
    @PostMapping("/createCircuit")
-   
   public String createCircuit(@RequestBody Map<String, Object> body) {
         if (!body.containsKey("table") || !body.containsKey("outputQubits")) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The request body must contain qubits and outputQubits");
@@ -31,12 +30,12 @@ public class CircuitController{
       }
 
    @PostMapping("/generateCode")
-
-   public String generateCode(@RequestParam(required=false) String name, @RequestBody Circuit circuit) {
-        if(name != null) {
+   public Map<String, Object> generateCode(@RequestParam(required = false) String name, @RequestBody Circuit circuit) {
+        if (name != null) {
             circuit.setName(name);
         }
-      
-        return this.service.generateCode(circuit);  
-  }
+
+        // Assuming the service method is updated to return a Map<String, Object>
+        return this.service.generateCode(circuit);
+   }
 }

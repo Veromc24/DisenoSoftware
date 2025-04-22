@@ -23,11 +23,20 @@ public class CircuitService {
        return "hola";
       }
 
-   public String generateCode( Circuit circuit) {
+   public Map<String, Object> generateCode(Circuit circuit) {
+      Map<String, Object> result = new HashMap<>();
+      
+      // Generate the code using the Circuit object
       String code = circuit.generateCode();
-        if(circuit.getName() != null) {
-            this.circuitDAO.save(circuit);
-        }
-        return code;
+      
+      // Save the circuit if it has a valid name
+      if (circuit.getName() != null) {
+          this.circuitDAO.save(circuit);
+      }
+      
+      // Add the generated code to the result map
+      result.put("code", code);
+      
+      return result;
   }
 }
