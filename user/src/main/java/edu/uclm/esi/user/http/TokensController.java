@@ -1,4 +1,4 @@
-package main.java.edu.uclm.esi.user.http;
+package edu.uclm.esi.user.http;
 
 import java.util.Random;
 

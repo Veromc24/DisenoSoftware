@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 import { CircuitComponent } from './circuit/circuit.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CircuitComponent
+    CircuitComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

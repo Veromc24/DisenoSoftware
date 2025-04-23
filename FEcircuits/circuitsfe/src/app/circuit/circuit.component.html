@@ -5,13 +5,10 @@
 <input type="number" [(ngModel)]="outputQubits" min="1">
 <br>
 
-
 <button (click)="buildMatrix()" [disabled]="inputQubits <= 0 || outputQubits <= 0">Build Matrix</button>
 <br>
 
-
-  
-<table *ngIf="matrix">
+<table *ngIf="showMatrix"> <!-- Mostrar la tabla solo si showMatrix es true -->
   <tr>
     <td [attr.colspan]="inputQubits + outputQubits">
       <button (click)="generateCode()">Generate Code</button>
@@ -23,7 +20,6 @@
         {{ value }}
       </span>
       <span *ngIf="colNumber >= inputQubits" (click)="negate(rowNumber, colNumber)" style="color: red">
-        
         {{ value }}
       </span>
     </td>

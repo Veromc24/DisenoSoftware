@@ -12,6 +12,7 @@ export class CircuitComponent {
   inputQubits: number;
   outputQubits: number;
   matrix: Matrix;
+  showMatrix: boolean = false; // Nueva propiedad para controlar la visibilidad de la tabla
 
   constructor(private service: CircuitService) {  // Inyectar el servicio correctamente
     this.inputQubits = 3;
@@ -20,12 +21,12 @@ export class CircuitComponent {
   }
 
   buildMatrix() {
-    console.log(this.inputQubits);
-    alert(this.outputQubits);
+    this.matrix = new Matrix(this.inputQubits, this.outputQubits); // Reconstruir la matriz
+    this.showMatrix = true; // Mostrar la tabla al pulsar el botón
   }
 
   negate(row: number, col: number) {
-    this.matrix!.values[row][col] = this.matrix?.values[row][col] === 0 ? 1 : 0;
+    this.matrix.values[row][col] = this.matrix.values[row][col] === 0 ? 1 : 0;
   }
 
   generateCode() {
