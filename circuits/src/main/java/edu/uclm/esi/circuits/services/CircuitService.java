@@ -9,6 +9,7 @@ import edu.uclm.esi.circuits.dao.CircuitDao; // Adjust the class name and packag
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import edu.uclm.esi.circuits.model.Circuit; // Adjust the package path if necessary
+import edu.uclm.esi.circuits.services.ProxyBEUsuarios; // Import the proxy
 
 @Service
 public class CircuitService {
@@ -16,33 +17,28 @@ public class CircuitService {
     @Autowired
     private CircuitDao circuitDAO;
 
+    @Autowired // Inject the proxy
+    private ProxyBEUsuarios proxyBEUsuarios;
+
     public String createCircuit(Map<String, Object> body) {
         return "hola";
     }
 
-    public Map<String, Object> generateCode(Circuit circuit, String token) {
-        // Check if the number of rows (2^inputQubits) exceeds the limit (e.g., 6)
-        // Note: The image shows getQubits returning table.length. If the check should be on input qubits,
-        // the logic in getQubits or the check here needs adjustment.
-        // Assuming the check is intended for the value returned by the image's getQubits():
-        if (circuit.getQubits() > 6) { // Check based on table.length
+    public Map<String, Object> generateCode(Circuit circuit, String token) throws Exception {
+    
+        if (circuit.getQubits() > 6) { 
+            // Check based on table.length
+            ProxyBEUsuarios.get().checkCredit(token); // Check credit using the proxy
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Circuit exceeds the maximum allowed size (6 rows).");
         }
 
-        // TODO: Implement credit check using the token
-        // ProxyBEU.checkCredit(token);
-
         Map<String, Object> result = new HashMap<>();
 
-        // Generate the code using the Circuit object
+    
         String code = circuit.generateCode();
-
-        // Save the circuit if it has a valid name
         if (circuit.getName() != null) {
             this.circuitDAO.save(circuit);
         }
-
-        // Add the generated code to the result map
         result.put("code", code);
 
         return result;

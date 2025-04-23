@@ -13,7 +13,7 @@ export class CircuitService {
   generateCode(outputQubits: number, matrix?: Matrix): Observable<any> {
     const body = {
       outputQubits: outputQubits,
-      table:matrix?.values
+      table: matrix?.values
     };
 
     // Log the body to the console before sending the request
