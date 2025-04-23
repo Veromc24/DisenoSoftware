@@ -16,6 +16,9 @@ export class CircuitService {
       table:matrix?.values
     };
 
+    // Log the body to the console before sending the request
+    console.log("Request Body:", JSON.stringify(body)); 
+
     return this.http.post("http://localhost:8080/circuits/generateCode", body);
   }
 }

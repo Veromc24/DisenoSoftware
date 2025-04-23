@@ -5,6 +5,9 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import edu.uclm.esi.circuits.services.CircuitService; // Adjust the package path as needed
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,30 +15,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.http.HttpStatus;
 import edu.uclm.esi.circuits.model.Circuit;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/circuits")
 @CrossOrigin(origins = "*")
-public class CircuitController{
+public class CircuitController {
 
-   @Autowired
-   private CircuitService service;
-   
-   @PostMapping("/createCircuit")
-  public String createCircuit(@RequestBody Map<String, Object> body) {
+    @Autowired
+    private CircuitService service;
+
+    @PostMapping("/createCircuit")
+    public String createCircuit(@RequestBody Map<String, Object> body) {
         if (!body.containsKey("table") || !body.containsKey("outputQubits")) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The request body must contain qubits and outputQubits");
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                    "The request body must contain qubits and outputQubits");
         }
         return this.service.createCircuit(body);
-      }
+    }
 
-   @PostMapping("/generateCode")
-   public Map<String, Object> generateCode(@RequestParam(required = false) String name, @RequestBody Circuit circuit) {
+    @PostMapping("/generateCode")
+    public Map<String, Object> generateCode(HttpServletRequest request, @RequestParam(required = false) String name,
+            @RequestBody Circuit circuit) {
         if (name != null) {
             circuit.setName(name);
         }
 
-        // Assuming the service method is updated to return a Map<String, Object>
-        return this.service.generateCode(circuit);
-   }
+        // Get token from Authorization header
+        String token = request.getHeader("Authorization");
+
+        // Call service method with circuit and token
+        return this.service.generateCode(circuit, token);
+    }
 }
