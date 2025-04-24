@@ -1,5 +1,6 @@
 package edu.uclm.esi.circuits.services;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,22 +26,30 @@ public class CircuitService {
     }
 
     public Map<String, Object> generateCode(Circuit circuit, String token) throws Exception {
-    
-        if (circuit.getQubits() > 6) { 
-            // Check based on table.length
-            ProxyBEUsuarios.get().checkCredit(token); // Check credit using the proxy
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Circuit exceeds the maximum allowed size (6 rows).");
+        if (circuit.getQubits() > 6) {
+            if (token == null)
+                throw new Exception("You must provide a token to generate a code for a circuit with more than 6 qubits");
+            ProxyBEUsuarios.get().checkCredit(token);
         }
 
-        Map<String, Object> result = new HashMap<>();
+        String templateCode = this.readFile("ibm.local.txt");
+        String code = circuit.generateCode(templateCode);
 
-    
-        String code = circuit.generateCode();
         if (circuit.getName() != null) {
             this.circuitDAO.save(circuit);
         }
-        result.put("code", code);
 
+        Map<String, Object> result = new HashMap<>();
+        result.put("code", code);
         return result;
+    }
+
+    private String readFile(String fileName) throws Exception {
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        try (InputStream fs = classLoader.getResourceAsStream(fileName)) {
+            byte[] b = new byte[fs.available()];
+            fs.read(b);
+            return new String(b);
+        }
     }
 }

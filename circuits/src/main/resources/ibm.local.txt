@@ -1,0 +1,14 @@
+from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
+
+greg = QuantumRegister(#QUBITS#, 'q')
+creg = ClassicalRegister(#OUTPUT QUBITS#, 'c')
+circuit = QuantumCircuit(greg, creg)
+
+ONE = (0, 1)
+ZERO = (1, 0)
+
+#INITIALIZE#
+#CIRCUIT#
+#MEASURES#
+
+# Add any additional configurations or comments below

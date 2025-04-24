@@ -62,16 +62,8 @@ public class Circuit {
         return this.table.length;
     }
 
-    public String generateCode() {
-        // Generate code based on the table
-        StringBuilder code = new StringBuilder();
-        for (int i = 0; i < table.length; i++) {
-            for (int j = 0; j < table[i].length; j++) {
-                code.append("Qubit ").append(i).append(" -> Qubit ").append(table[i][j]).append("\n");
-            }
-        }
-        System.out.println(code.toString());
-        return code.toString();
+    public String generateCode(String template) {
+        return "Hola";
     }
 
     public Circuit() {
