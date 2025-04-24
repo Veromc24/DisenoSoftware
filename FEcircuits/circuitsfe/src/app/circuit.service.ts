@@ -10,14 +10,15 @@ export class CircuitService {
 
   constructor(private http: HttpClient) { }
 
-  generateCode(outputQubits: number, matrix?: Matrix): Observable<any> {
-    const body = {
+  generateCode(outputQubits: number, matrix: Matrix, token: String | null): Observable<any> {
+    let body = {
       outputQubits: outputQubits,
-      table: matrix?.values
+      table : matrix?.values
+    }
+   
+    let headers = {
+      'Authorization': 'Bearer ' + token
     };
-
-    // Log the body to the console before sending the request
-    console.log("Request Body:", JSON.stringify(body)); 
 
     return this.http.post("http://localhost:8080/circuits/generateCode", body);
   }

@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import edu.uclm.esi.circuits.services.CircuitService; // Adjust the package path as needed
+import edu.uclm.esi.circuits.services.ProxyBEUsuarios;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -41,24 +42,21 @@ public class CircuitController {
         if (name != null) {
             circuit.setName(name);
         }
+    
+        String token = request.getHeader("Authorization");
+
+        // Verificar el token antes de continuar
+        ProxyBEUsuarios.get().checkCredit(token);
 
         if (circuit.getQubits() > 6) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Circuit exceeds the maximum allowed size (6 rows).");
         }
 
-        System.out.println("Received Circuit: " + circuit);
-
-        String token = request.getHeader("Authorization");
-
         try {
             return this.service.generateCode(circuit, token);
         } catch (ResponseStatusException e) {
-            // Re-throw ResponseStatusExceptions directly
             throw e;
         } catch (Exception e) {
-            // Wrap other exceptions with PAYMENT_REQUIRED status
-            // Log the original exception internally if needed for debugging
-            // e.g., log.error("Unexpected error during code generation", e);
             throw new ResponseStatusException(HttpStatus.PAYMENT_REQUIRED, e.getMessage());
         }
     }

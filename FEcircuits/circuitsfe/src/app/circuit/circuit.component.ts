@@ -30,7 +30,9 @@ export class CircuitComponent {
   }
 
   generateCode() {
-    this.service.generateCode(this.outputQubits, this.matrix).subscribe(
+    let token = sessionStorage.getItem("token");
+
+    this.service.generateCode(this.outputQubits, this.matrix!, token).subscribe(
       (ok: any) => {
         console.log("Todo ha salido bien");
       },
