@@ -13,11 +13,13 @@ export class CircuitComponent {
   outputQubits: number;
   matrix: Matrix;
   showMatrix: boolean = false; // Nueva propiedad para controlar la visibilidad de la tabla
+  manager: { token: string | null }; // Nueva propiedad para manejar el token
 
   constructor(private service: CircuitService) {  // Inyectar el servicio correctamente
     this.inputQubits = 3;
     this.outputQubits = 3;
     this.matrix = new Matrix(this.inputQubits, this.outputQubits);  // Asegúrate de que Matrix tenga el constructor correcto
+    this.manager = { token: sessionStorage.getItem("token") }; // Inicializar el token desde sessionStorage
   }
 
   buildMatrix() {
@@ -30,8 +32,12 @@ export class CircuitComponent {
   }
 
   generateCode() {
-    let token = sessionStorage.getItem("token");
-
+    let token = this.manager.token; // Usar el token desde this.manager
+   
+    if (!token) {
+      token = null; // Si no hay token, asignar null
+    }
+    
     this.service.generateCode(this.outputQubits, this.matrix!, token).subscribe(
       (ok: any) => {
         console.log("Todo ha salido bien");

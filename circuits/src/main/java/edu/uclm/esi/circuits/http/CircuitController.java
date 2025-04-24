@@ -42,8 +42,9 @@ public class CircuitController {
         if (name != null) {
             circuit.setName(name);
         }
-    
-        String token = request.getHeader("Authorization");
+
+        // Obtener el token desde el encabezado "token_generacion"
+        String token = request.getHeader("token_generacion");
 
         // Verificar el token antes de continuar
         ProxyBEUsuarios.get().checkCredit(token);

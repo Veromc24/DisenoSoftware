@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { UsersService } from '../users.service';
+import { ManagerService } from '../manager.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ export class LoginComponent {
   name?: string;
   pwd?: string;
 
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService: UsersService, private manager: ManagerService) {}
 
   login() {
     if (!this.name || !this.pwd) {
@@ -21,8 +22,7 @@ export class LoginComponent {
 
     this.usersService.login(this.name, this.pwd).subscribe(
       (token) => {
-        sessionStorage.setItem('token', token);
-        console.log('Login exitoso');
+       this.manager.token = token;
       },
       (error) => {
         console.error('Error en el login', error);

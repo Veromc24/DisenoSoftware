@@ -13,13 +13,11 @@ export class CircuitService {
   generateCode(outputQubits: number, matrix: Matrix, token: String | null): Observable<any> {
     let body = {
       outputQubits: outputQubits,
-      table : matrix?.values
-    }
-   
-    let headers = {
-      'Authorization': 'Bearer ' + token
+      table: matrix?.values
     };
 
-    return this.http.post("http://localhost:8080/circuits/generateCode", body);
+    let headers = token ? { 'token_generacion': token as string } : undefined;
+
+    return this.http.post("http://localhost:8080/circuits/generateCode", body, { headers: headers });
   }
 }
