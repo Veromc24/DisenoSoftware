@@ -63,7 +63,7 @@ public class Circuit {
     }
 
     public String generateCode(String template) {
-        return "Hola";
+        return "generateCode Hola";
     }
 
     public Circuit() {

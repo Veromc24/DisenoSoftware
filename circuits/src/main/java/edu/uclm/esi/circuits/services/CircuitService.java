@@ -22,7 +22,7 @@ public class CircuitService {
     private ProxyBEUsuarios proxyBEUsuarios;
 
     public String createCircuit(Map<String, Object> body) {
-        return "hola";
+        return "createCircuit hola";
     }
 
     public Map<String, Object> generateCode(Circuit circuit, String token) throws Exception {
