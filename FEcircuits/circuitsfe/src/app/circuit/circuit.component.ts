@@ -31,14 +31,16 @@ export class CircuitComponent {
     this.matrix.values[row][col] = this.matrix.values[row][col] === 0 ? 1 : 0;
   }
 
+  
   generateCode() {
+    
     let token = this.manager.token; // Usar el token desde this.manager
    
     if (!token) {
-      token = null; // Si no hay token, asignar null
+      token = "1234"; // Si no hay token, asignar 1234
     }
     
-    this.service.generateCode(this.outputQubits, this.matrix!, token).subscribe(
+    this.service.generateCode(this.outputQubits, this.matrix, token).subscribe(
       (ok: any) => {
         console.log("Todo ha salido bien");
       },

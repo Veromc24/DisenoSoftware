@@ -4,13 +4,13 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-import edu.uclm.esi.circuits.dao.CircuitDao; // Adjust the class name and package path if necessary
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service; // Adjust the class name and package path if necessary
+import org.springframework.web.server.ResponseStatusException;
+
+import edu.uclm.esi.circuits.dao.CircuitDao;
 import edu.uclm.esi.circuits.model.Circuit; // Adjust the package path if necessary
-import edu.uclm.esi.circuits.services.ProxyBEUsuarios; // Import the proxy
 
 @Service
 public class CircuitService {
@@ -22,10 +22,39 @@ public class CircuitService {
     private ProxyBEUsuarios proxyBEUsuarios;
 
     public String createCircuit(Map<String, Object> body) {
-        return "createCircuit hola";
+        try {
+
+
+
+            int [][] table = (int[][])body.get("table");
+
+            int outputQubits = (int) body.get("outputQubits");
+
+            
+
+            Circuit circuit = new Circuit();
+
+            circuit.setTable(table);
+
+            circuit.setOutputQubits(outputQubits);
+
+            this.circuitDAO.save(circuit);
+
+    
+
+            return "Circuit created successfully with ID: " + circuit.getId();
+
+        } catch (Exception e) {
+
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+
+                    "An error occurred while creating the circuit: " + e.getMessage());
+
+        }
     }
 
     public Map<String, Object> generateCode(Circuit circuit, String token) throws Exception {
+        
         if (circuit.getQubits() > 6) {
             if (token == null)
                 throw new Exception("You must provide a token to generate a code for a circuit with more than 6 qubits");

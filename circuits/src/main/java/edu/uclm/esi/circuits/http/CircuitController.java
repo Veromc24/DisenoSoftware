@@ -2,22 +2,20 @@ package edu.uclm.esi.circuits.http;
 
 import java.util.Map;
 
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-import edu.uclm.esi.circuits.services.CircuitService; // Adjust the package path as needed
-import edu.uclm.esi.circuits.services.ProxyBEUsuarios;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin; // Adjust the package path as needed
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.http.HttpStatus;
-import edu.uclm.esi.circuits.model.Circuit;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import edu.uclm.esi.circuits.model.Circuit;
+import edu.uclm.esi.circuits.services.CircuitService;
+import edu.uclm.esi.circuits.services.ProxyBEUsuarios;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/circuits")
