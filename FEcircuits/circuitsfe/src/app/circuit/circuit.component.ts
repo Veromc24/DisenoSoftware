@@ -17,6 +17,7 @@ export class CircuitComponent {
   circuitId: string = ''; // Variable para almacenar el ID ingresado
   retrievedCircuit: any = null; // Variable para almacenar el circuito recuperado
   creationMessage: string = ''; // Nueva propiedad para almacenar mensajes de creación
+  circuitName: string = ''; // Nueva propiedad para el nombre del circuito
 
   constructor(private service: CircuitService) {  // Inyectar el servicio correctamente
     this.inputQubits = 3;
@@ -54,7 +55,8 @@ export class CircuitComponent {
   createCircuit() {
     const body = {
       table: this.matrix.values, // Matriz de verdad
-      outputQubits: this.outputQubits // Número de qubits de salida
+      outputQubits: this.outputQubits, // Número de qubits de salida
+      name: this.circuitName // Nombre del circuito
     };
 
     this.service.createCircuit(body).subscribe({

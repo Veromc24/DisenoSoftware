@@ -33,23 +33,28 @@ public class CircuitService {
             if (tableObj == null || !(tableObj instanceof java.util.List)) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid or missing 'table' parameter");
             }
-            int [][] table;
+            int[][] table;
             try {
                 @SuppressWarnings("unchecked")
                 java.util.List<java.util.List<Integer>> tableList = (java.util.List<java.util.List<Integer>>) tableObj;
                 table = tableList.stream()
-                                         .map(row -> row.stream().mapToInt(Integer::intValue).toArray())
-                                         .toArray(int[][]::new);
+                                 .map(row -> row.stream().mapToInt(Integer::intValue).toArray())
+                                 .toArray(int[][]::new);
             } catch (ClassCastException e) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid 'table' format. Expected a 2D array of integers.");
             }
+
+            // Obtener el nombre del circuito
+            Object nameObj = body.get("name");
+            String name = (nameObj instanceof String) ? (String) nameObj : null;
 
             // Crear y guardar el circuito
             Circuit circuit = new Circuit();
             circuit.setTable(table);
             circuit.setOutputQubits(outputQubits);
+            circuit.setName(name); // Asignar el nombre al circuito
 
-            this.circuitDAO.save(circuit); 
+            this.circuitDAO.save(circuit);
 
             return "Circuit created successfully with ID: " + circuit.getId();
         } catch (ResponseStatusException e) {

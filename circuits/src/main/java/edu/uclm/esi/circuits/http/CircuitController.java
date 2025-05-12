@@ -36,7 +36,7 @@ public class CircuitController {
             response.put("message", result);
             return ResponseEntity.ok(response);
         } catch (ResponseStatusException e) {
-            throw e; // Re-lanzar excepciones específicas
+            throw e;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error: " + e.getMessage());
         }

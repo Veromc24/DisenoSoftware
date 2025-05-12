@@ -4,6 +4,9 @@
 <strong>Number of output qubits</strong>
 <input type="number" [(ngModel)]="outputQubits" min="1">
 <br>
+<strong>Nombre del circuito</strong>
+<input type="text" [(ngModel)]="circuitName" placeholder="Nombre del circuito">
+<br>
 
 <button (click)="buildMatrix()" [disabled]="inputQubits <= 0 || outputQubits <= 0">Build Matrix</button>
 <br>
