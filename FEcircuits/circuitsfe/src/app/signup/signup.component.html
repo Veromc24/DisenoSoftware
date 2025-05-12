@@ -7,7 +7,10 @@
   <input type="email" id="email" [(ngModel)]="email" name="email" required>
   <br>
   <label for="password">Contraseña:</label>
-  <input type="password" id="password" [(ngModel)]="password" name="password" required>
+  <input type="password" id="password" [(ngModel)]="password" name="password" required (input)="validatePassword()">
+  <div *ngIf="passwordErrors.length > 0" class="error-messages">
+    <p *ngFor="let error of passwordErrors" class="text-danger">{{ error }}</p>
+  </div>
   <br>
-  <button type="submit" [disabled]="!signupForm.valid">Registrarse</button>
+  <button type="submit" [disabled]="!signupForm.valid || passwordErrors.length > 1">Registrarse</button>
 </form>

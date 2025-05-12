@@ -13,6 +13,7 @@ export class SignupComponent {
   password?: string;
 
   constructor(private usersService: UsersService) {}
+  passwordErrors: string[] = [];
 
   signup() {
     if (!this.name || !this.email || !this.password) {
@@ -26,7 +27,7 @@ export class SignupComponent {
       password: this.password
     };
 
-    this.usersService.signup(user).subscribe(
+     this.usersService.signup(user).subscribe(
       (response) => {
         console.log('Usuario registrado con éxito:', response);
         alert('Registro exitoso. Ahora puede iniciar sesión.');
@@ -36,5 +37,24 @@ export class SignupComponent {
         alert('Hubo un error al registrarse. Inténtelo de nuevo.');
       }
     );
+  }
+
+  validatePassword() {
+    this.passwordErrors = [];
+    if (this.password && this.password.length < 8) {
+      this.passwordErrors.push('La contraseña debe tener al menos 8 caracteres.');
+    }
+    if (this.password && !/[A-Z]/.test(this.password)) {
+      this.passwordErrors.push('La contraseña debe contener al menos una letra mayúscula.');
+    }
+    if (this.password && !/[a-z]/.test(this.password)) {
+      this.passwordErrors.push('La contraseña debe contener al menos una letra minúscula.');
+    }
+    if (this.password && !/[0-9]/.test(this.password)) {
+      this.passwordErrors.push('La contraseña debe contener al menos un número.');
+    }
+    if (this.password && !/[!@#$%^&*]/.test(this.password)) {
+      this.passwordErrors.push('La contraseña debe contener al menos un carácter especial (!@#$%^&*).');
+    }
   }
 }
