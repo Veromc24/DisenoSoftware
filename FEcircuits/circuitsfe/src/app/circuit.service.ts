@@ -20,4 +20,8 @@ export class CircuitService {
 
     return this.http.post("http://localhost:8080/circuits/generateCode", body, { headers: headers });
   }
+
+  createCircuit(body: { table: number[][]; outputQubits: number }): Observable<any> {
+    return this.http.post("http://localhost:8080/circuits/createCircuit", body);
+  }
 }

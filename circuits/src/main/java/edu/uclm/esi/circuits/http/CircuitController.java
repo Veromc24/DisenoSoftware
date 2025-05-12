@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin; // Adjust the package path as needed
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,12 +27,15 @@ public class CircuitController {
     private CircuitService service;
 
     @PostMapping("/createCircuit")
-    public String createCircuit(@RequestBody Map<String, Object> body) {
-        if (!body.containsKey("table") || !body.containsKey("outputQubits")) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
-                    "The request body must contain qubits and outputQubits");
+    public ResponseEntity<String> createCircuit(@RequestBody Map<String, Object> body) {
+        try {
+            String result = this.service.createCircuit(body);
+            return ResponseEntity.ok(result);
+        } catch (ResponseStatusException e) {
+            throw e; // Re-lanzar excepciones específicas
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error: " + e.getMessage());
         }
-        return this.service.createCircuit(body);
     }
 
     @PostMapping("/generateCode")

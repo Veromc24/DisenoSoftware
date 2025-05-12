@@ -23,33 +23,39 @@ public class CircuitService {
 
     public String createCircuit(Map<String, Object> body) {
         try {
+            Object outputQubitsObj = body.get("outputQubits");
+            if (outputQubitsObj == null || !(outputQubitsObj instanceof Integer)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid or missing 'outputQubits' parameter");
+            }
+            int outputQubits = (int) outputQubitsObj;
 
+            Object tableObj = body.get("table");
+            if (tableObj == null || !(tableObj instanceof java.util.List)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid or missing 'table' parameter");
+            }
+            int [][] table;
+            try {
+                @SuppressWarnings("unchecked")
+                java.util.List<java.util.List<Integer>> tableList = (java.util.List<java.util.List<Integer>>) tableObj;
+                table = tableList.stream()
+                                         .map(row -> row.stream().mapToInt(Integer::intValue).toArray())
+                                         .toArray(int[][]::new);
+            } catch (ClassCastException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid 'table' format. Expected a 2D array of integers.");
+            }
 
-
-            int [][] table = (int[][])body.get("table");
-
-            int outputQubits = (int) body.get("outputQubits");
-
-            
-
+            // Crear y guardar el circuito
             Circuit circuit = new Circuit();
-
             circuit.setTable(table);
-
             circuit.setOutputQubits(outputQubits);
 
-            this.circuitDAO.save(circuit);
-
-    
+            //this.circuitDAO.save(circuit);  IMPLEMENTAR EL DAO
 
             return "Circuit created successfully with ID: " + circuit.getId();
-
+        } catch (ResponseStatusException e) {
+            throw e; // Re-lanzar excepciones específicas
         } catch (Exception e) {
-
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-
-                    "An error occurred while creating the circuit: " + e.getMessage());
-
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while creating the circuit: " + e.getMessage());
         }
     }
 

@@ -11,6 +11,11 @@
 <table *ngIf="showMatrix"> <!-- Mostrar la tabla solo si showMatrix es true -->
   <tr>
     <td [attr.colspan]="inputQubits + outputQubits">
+      <button (click)="createCircuit()">Create circuit</button>
+    </td>
+  </tr>
+  <tr>
+    <td [attr.colspan]="inputQubits + outputQubits">
       <button (click)="generateCode()">Generate Code</button>
     </td>
   </tr>

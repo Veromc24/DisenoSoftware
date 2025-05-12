@@ -37,10 +37,10 @@ export class CircuitComponent {
     let token = this.manager.token; // Usar el token desde this.manager
    
     if (!token) {
-      token = "1234"; // Si no hay token, asignar 1234
+      token = null; // Si no hay token, asignar null
     }
     
-    this.service.generateCode(this.outputQubits, this.matrix, token).subscribe(
+    this.service.generateCode(this.outputQubits, this.matrix!, token).subscribe(
       (ok: any) => {
         console.log("Todo ha salido bien");
       },
@@ -48,5 +48,23 @@ export class CircuitComponent {
         console.error("Algo ha ido mal", error);
       }
     );
+  }
+
+  createCircuit() {
+    const body = {
+      table: this.matrix.values, // Matriz de verdad
+      outputQubits: this.outputQubits // Número de qubits de salida
+    };
+
+    console.log("Enviando cuerpo:", body); // Depuración: Verifica el contenido del cuerpo
+
+    this.service.createCircuit(body).subscribe({
+      next: () => {
+        console.log("Circuit created successfully");
+      },
+      error: (error: any) => {
+        console.error("An error occurred while creating the circuit", error);
+      }
+    });
   }
 }
