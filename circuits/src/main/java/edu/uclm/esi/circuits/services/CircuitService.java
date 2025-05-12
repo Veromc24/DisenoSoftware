@@ -49,7 +49,7 @@ public class CircuitService {
             circuit.setTable(table);
             circuit.setOutputQubits(outputQubits);
 
-            //this.circuitDAO.save(circuit);  IMPLEMENTAR EL DAO
+            this.circuitDAO.save(circuit); 
 
             return "Circuit created successfully with ID: " + circuit.getId();
         } catch (ResponseStatusException e) {
@@ -85,6 +85,15 @@ public class CircuitService {
             byte[] b = new byte[fs.available()];
             fs.read(b);
             return new String(b);
+        }
+    }
+
+    public Circuit getCircuitById(String id) {
+        try {
+            return this.circuitDAO.findById(id)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Circuit not found with ID: " + id));
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while retrieving the circuit: " + e.getMessage());
         }
     }
 }

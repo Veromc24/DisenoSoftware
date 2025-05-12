@@ -16,6 +16,13 @@
   </tr>
   <tr>
     <td [attr.colspan]="inputQubits + outputQubits">
+      <p *ngIf="creationMessage && creationMessage.includes('ID:')"style="color: green;">
+        <strong style="color: black;">ID del Circuito:</strong> {{ creationMessage.split('ID:')[1].trim() }}
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td [attr.colspan]="inputQubits + outputQubits">
       <button (click)="generateCode()">Generate Code</button>
     </td>
   </tr>
@@ -30,3 +37,34 @@
     </td>
   </tr>
 </table>
+
+<div>
+  <strong>Ingrese el ID del circuito:</strong>
+  <input type="text" [(ngModel)]="circuitId" placeholder="Circuit ID">
+  <button (click)="getCircuit()">Recuperar Circuito</button>
+</div>
+
+<div *ngIf="retrievedCircuit">
+  <h3>Circuito Recuperado:</h3>
+  <p><strong>ID:</strong> {{ retrievedCircuit.id }}</p>
+  <p><strong>Output Qubits:</strong> {{ retrievedCircuit.outputQubits }}</p>
+  <p><strong>Nombre:</strong> {{ retrievedCircuit.name || 'Sin nombre' }}</p>
+  <p><strong>Número de Qubits:</strong> {{ retrievedCircuit.qubits }}</p>
+  <h4>Tabla de Verdad:</h4>
+  <table border="1">
+    <tr>
+      <th *ngFor="let col of retrievedCircuit.table[0]; let i = index">
+        <span [style.color]="i < retrievedCircuit.table[0].length - retrievedCircuit.outputQubits ? 'blue' : 'red'">
+          Columna {{ i + 1 }}
+        </span>
+      </th>
+    </tr>
+    <tr *ngFor="let row of retrievedCircuit.table">
+      <td *ngFor="let cell of row; let colNumber = index">
+        <span [style.color]="colNumber < retrievedCircuit.table[0].length - retrievedCircuit.outputQubits ? 'blue' : 'red'">
+          {{ cell }}
+        </span>
+      </td>
+    </tr>
+  </table>
+</div>

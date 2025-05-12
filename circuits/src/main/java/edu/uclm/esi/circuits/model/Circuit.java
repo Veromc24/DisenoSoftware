@@ -2,10 +2,14 @@ package edu.uclm.esi.circuits.model;
 
 import java.util.Arrays;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.Transient;
 
 @Entity
 public class Circuit {
@@ -15,9 +19,13 @@ public class Circuit {
     private int outputQubits;
     @Lob
     @Column(columnDefinition = "TEXT", name = "truth_table")
-    private int[][] table;
+    private String truthTableJson; // Store as JSON string
+    @Transient
+    private int[][] table; // Transient field for in-memory use
     @Column(length = 50)
     private String name;
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public String getId() {
         return id;
@@ -36,11 +44,31 @@ public class Circuit {
     }
 
     public int[][] getTable() {
-        return table;
+        if (this.table == null && this.truthTableJson != null) {
+            try {
+                this.table = objectMapper.readValue(this.truthTableJson, int[][].class);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("Failed to deserialize truth table JSON", e);
+            }
+        }
+        return this.table;
     }
 
     public void setTable(int[][] table) {
         this.table = table;
+        try {
+            this.truthTableJson = objectMapper.writeValueAsString(table);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to serialize truth table to JSON", e);
+        }
+    }
+
+    public String getTruthTableJson() {
+        return truthTableJson;
+    }
+
+    public void setTruthTableJson(String truthTableJson) {
+        this.truthTableJson = truthTableJson;
     }
 
     public String getName() {
