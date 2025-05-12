@@ -7,13 +7,15 @@ import { PaymentsComponent } from './payments/payments.component';
 import { FormsModule } from '@angular/forms'; // Necesario para [(ngModel)]
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { SignupComponent } from './signup/signup.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     CircuitComponent,
-    // PaymentsComponent
+    SignupComponent,
+    //PaymentsComponent
   ],
   imports: [
     BrowserModule,

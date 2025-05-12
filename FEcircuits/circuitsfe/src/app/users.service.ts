@@ -11,6 +11,15 @@ export class UsersService {
 
   login(name: string, pwd: string) {
     const body = { name, pwd };
-    return this.http.post<string>(`${this.baseUrl}/loginConBody`, body, { responseType: 'text' as 'json' });
+    return this.http.post(`${this.baseUrl}/loginConBody`, body, { responseType: 'text' as 'json' });
+  }
+
+  signup(user: { name: string; email: string; password: string }) {
+    const body = {
+      name: user.name,
+      email: user.email,
+      password: user.password
+    };
+    return this.http.post(`${this.baseUrl}/signup`, body);
   }
 }

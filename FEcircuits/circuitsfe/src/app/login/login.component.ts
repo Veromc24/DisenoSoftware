@@ -22,7 +22,7 @@ export class LoginComponent {
 
     this.usersService.login(this.name, this.pwd).subscribe(
       (token) => {
-       this.manager.token = token;
+       //this.manager.token = token;
       },
       (error) => {
         console.error('Error en el login', error);
