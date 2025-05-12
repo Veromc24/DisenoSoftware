@@ -29,6 +29,11 @@ public class UserService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with email: " + email));
     }
 
+    public User getUserByName(String name) {
+        User userfound = userDao.findByName(name);
+        return userfound;
+    }
+
     public void checkUserCredit(String token) {
         String result = proxyBEUsuarios.checkCredit(token);
         if (result == null || result.isEmpty()) {

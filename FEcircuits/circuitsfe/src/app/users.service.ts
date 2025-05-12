@@ -9,9 +9,9 @@ export class UsersService {
 
   constructor(private http: HttpClient) {}
 
-  login(name: string, pwd: string) {
-    const body = { name, pwd };
-    return this.http.post(`${this.baseUrl}/loginConBody`, body, { responseType: 'text' as 'json' });
+  login(name: string, password: string) {
+    const body = { name, password };
+    return this.http.post(`${this.baseUrl}/loginConBody`, body, { responseType: 'json' });
   }
 
   signup(user: { name: string; email: string; password: string }) {

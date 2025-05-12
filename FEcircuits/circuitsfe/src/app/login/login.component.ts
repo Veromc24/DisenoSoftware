@@ -21,12 +21,14 @@ export class LoginComponent {
     }
 
     this.usersService.login(this.name, this.pwd).subscribe(
-      (token) => {
-       //this.manager.token = token;
+      (response: any) => {
+        console.log('Inicio de sesión exitoso:', response);
+        alert('Inicio de sesión exitoso.');
+        sessionStorage.setItem('token', response.token); // Guardar el token en el almacenamiento de sesión
       },
       (error) => {
-        console.error('Error en el login', error);
-        alert(error);
+        console.error('Error en el login:', error);
+        alert('Credenciales inválidas. Inténtelo de nuevo.');
       }
     );
   }

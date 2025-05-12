@@ -1,5 +1,10 @@
-<input type="text" [(ngModel)]="name" placeholder="Username">
-<br>
-<input type="password" [(ngModel)]="pwd" placeholder="Password">
-<br>
-<button (click)="login()">Login</button>
+<h2>Iniciar Sesión</h2>
+<form (ngSubmit)="login()" #loginForm="ngForm">
+  <label for="name">Nombre:</label>
+  <input type="text" id="name" [(ngModel)]="name" name="name" required>
+  <br>
+  <label for="pwd">Contraseña:</label>
+  <input type="password" id="pwd" [(ngModel)]="pwd" name="pwd" required>
+  <br>
+  <button type="submit" [disabled]="!loginForm.valid">Iniciar Sesión</button>
+</form>

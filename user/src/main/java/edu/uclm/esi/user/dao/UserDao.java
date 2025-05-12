@@ -8,5 +8,6 @@ import edu.uclm.esi.user.model.User; // Asegúrate de que la clase User esté en
 @Repository
 public interface UserDao extends JpaRepository<User, String> {
     // JpaRepository proporciona operaciones CRUD básicas
-    // Puedes definir métodos de consulta personalizados aquí si es necesario
+
+    User findByName(String name);
 }

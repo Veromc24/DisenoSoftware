@@ -43,9 +43,13 @@ public class UserController {
         return ResponseEntity.ok("Credit is valid.");
     }
 
-    @GetMapping("/loginConGetYParametros")
+    @GetMapping("/login")
     public String login(@RequestParam String name, @RequestParam String password) {
-        return "1234";
+        System.out.println("Nombre: " + name + ", Contraseña: " + password);
+        // Aquí puedes agregar la lógica para verificar el nombre de usuario y la contraseña
+        
+
+        return "User logged in successfully";
     }
 
     @GetMapping("/loginConPathYParametro/{name}")
@@ -58,9 +62,26 @@ public class UserController {
         return "1234";
     }
 
-    @PostMapping("/loginConBody")
-    public String loginConBody(@RequestBody Map<String, String> password) {
-        return "1234";
+    @PostMapping("/loginConBody")       //Este es el método que se va a usar para el login
+    public ResponseEntity<Map<String, String>> loginConBody(@RequestBody Map<String, String> credentials) {
+        String name = credentials.get("name");
+        String password = credentials.get("password");
+
+        if (name == null || password == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing parameters");
+        }
+        System.out.println("Nombre: " + name + ", Contraseña: " + password);
+        User user = userService.getUserByName(name); // Método que busca al usuario por nombre
+
+        if (user == null || !user.getPassword().equals(password)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
+        }
+
+        // Generar un token (puedes usar JWT u otro mecanismo)
+        String token = "fake-jwt-token"; // Reemplaza con lógica real para generar tokens
+
+        Map<String, String> response = Map.of("token", token);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/signup")
