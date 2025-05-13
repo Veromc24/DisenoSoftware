@@ -1,6 +1,7 @@
 package edu.uclm.esi.circuits.services;
 
 import java.io.IOException;
+
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;

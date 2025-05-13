@@ -69,7 +69,7 @@ public class CircuitService {
         if (circuit.getQubits() > 6) {
             if (token == null)
                 throw new Exception("You must provide a token to generate a code for a circuit with more than 6 qubits");
-            ProxyBEUsuarios.get().checkCredit(token);
+            proxyBEUsuarios.get().checkCredit(token);
         }
 
         String templateCode = this.readFile("ibm.local.txt");
