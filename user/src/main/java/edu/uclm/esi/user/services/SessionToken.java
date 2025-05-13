@@ -1,7 +1,8 @@
 package edu.uclm.esi.user.services;
 
 import java.util.concurrent.ConcurrentHashMap;
-
+import java.util.Collection;
+import java.util.Iterator;
 import org.springframework.stereotype.Service;
 
 import edu.uclm.esi.user.model.User;
@@ -19,10 +20,15 @@ public class SessionToken {
             tokenStore.replace(token, user);
         }
     }
-    public User getUser(String token) {
-        User user = tokenStore.get(token);
-        return user;
+    public User getUser(){
+        Collection<User> users = tokenStore.values(); // ← Esto accede directamente al usuario por token
+        User finalUser= new User() ;
+        for(User user:users){
+            finalUser = user;
+        }
+        return finalUser;
     }
+
 
     public void clearTokens() {
         tokenStore.clear();

@@ -36,13 +36,8 @@ export class CircuitComponent {
   }
 
   generateCode() {
-    let token = this.manager.token; // Usar el token desde this.manager
-   
-    if (!token) {
-      token = null; // Si no hay token, asignar null
-    }
-    
-    this.service.generateCode(this.outputQubits, this.matrix!, token).subscribe(
+
+    this.service.generateCode(this.outputQubits, this.matrix! ).subscribe(
       (ok: any) => {
         console.log("Todo ha salido bien");
       },

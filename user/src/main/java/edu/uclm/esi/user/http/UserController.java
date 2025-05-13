@@ -1,5 +1,6 @@
 package edu.uclm.esi.user.http;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -11,16 +12,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import edu.uclm.esi.user.model.User;
 import edu.uclm.esi.user.services.EmailService;
-import edu.uclm.esi.user.services.UserService;
 import edu.uclm.esi.user.services.SessionToken;
+import edu.uclm.esi.user.services.UserService;
 
 @RestController
 @RequestMapping("/users")
@@ -44,16 +43,21 @@ public class UserController {
     }
 
     @GetMapping("/checkCredit")
-    public ResponseEntity<String> checkCredit() {
-        String token = sessionToken.getToken(); // Obtener el token de la sesión actual
-        if (token == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No token provided");
+    public ResponseEntity<Map<String, String>> checkCredit() {
+
+        String token = sessionToken.getToken();
+        User user = sessionToken.getUser();
+
+        try {
+            userService.checkUserCredit(user); 
+            System.out.println("Token: " + token);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Crédito verificado correctamente");
+            System.out.println("Respuesta: " + response);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Token inválido o expirado"));
         }
-        // Verificar el crédito del usuario usando el usuario asociado al token
-        User user = sessionToken.getUser(token); // Obtener el usuario asociado al token
-        userService.checkUserCredit(user);
-        
-        return ResponseEntity.ok("Credit is valid.");
     }
 
     @PostMapping("/loginConBody")       //Este es el método que se va a usar para el login
@@ -185,10 +189,23 @@ public class UserController {
     public ResponseEntity<Map<String, String>> addCredit(@RequestBody Map<String, Object> data) {
         String token = sessionToken.getToken(); // Obtener el token de la sesión actual
         int amount = (int) data.get("amount");
-        User user = sessionToken.getUser(token); // Obtener el usuario asociado al token
+        User user = sessionToken.getUser(); // Obtener el usuario asociado al token
         userService.addCredit(user.getName(), amount);
 
         Map<String, String> response = Map.of("message", "Credit added successfully");
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/payCredit")
+    public ResponseEntity<Map<String, String>> payCredit(@RequestBody Map<String, Object> data) {
+        System.out.println("Datos recibidos en /payCredit: " + data);
+        String token = sessionToken.getToken(); // Obtener el token de la sesión actual
+        int amount = (int) data.get("amount");
+        User user = sessionToken.getUser(); // Obtener el usuario asociado al token
+        
+        userService.payCredit(user, amount);
+
+        Map<String, String> response = Map.of("message", "Credit paid successfully");
         return ResponseEntity.ok(response);
     }
 }

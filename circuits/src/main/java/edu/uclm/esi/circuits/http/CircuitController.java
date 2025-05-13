@@ -48,19 +48,8 @@ public class CircuitController {
         if (name != null) {
             circuit.setName(name);
         }
-
-        // Obtener el token desde el encabezado "token_generacion"
-        String token = request.getHeader("token_generacion");
-
-        // Verificar el token antes de continuar
-        ProxyBEUsuarios.get().checkCredit(token);
-
-        if (circuit.getQubits() > 6) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Circuit exceeds the maximum allowed size (6 rows).");
-        }
-
         try {
-            return this.service.generateCode(circuit, token);
+            return this.service.generateCode(circuit);
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {

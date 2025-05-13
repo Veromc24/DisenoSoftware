@@ -60,6 +60,7 @@ public class UserService {
 
     public void checkUserCredit(User user) {
         // Lógica para verificar el crédito del usuario
+        System.out.println("El nombre es: "+user.getName());
         int result=user.getCredit();
         if (result<=0) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid or insufficient credit for user.");
@@ -98,5 +99,18 @@ public class UserService {
     public boolean verifyToken(String token, String email) {
         // Lógica para verificar el token
         return tokenStorageService.isTokenValid(token,email);
+    }
+
+    public void payCredit(User user, int amount) {
+        // Lógica para pagar el crédito
+        System.out.println("El nombre es: "+user.getName());
+
+        int n=user.getCredit() - amount;
+        userDao.delete(user);
+        user.setCredit(n);
+        System.out.println("El nuevo credito es: "+user.getCredit());
+        System.out.println("El nuevo credito 2es: "+n);
+        System.out.println("El amount es: "+amount);
+        userDao.save(user);
     }
 }

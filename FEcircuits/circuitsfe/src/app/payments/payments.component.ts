@@ -8,7 +8,7 @@ import { loadStripe, Stripe, StripeElements, StripeCardElement } from '@stripe/s
   styleUrls: ['./payments.component.css']
 })
 export class PaymentsComponent {
-  amount: number = 10;
+  amount: number = 3;
   transactionId?: string;
   stripePromise = loadStripe('pk_test_51RHR37IsgNFjbH8wZzoLwgL3ZsHtSVxY4QpoRiy8XNq6bI9yIMDAkNbSLcUBwEZxQYWWbIr2AEyieO08XDAED07r00dm808gpU'); // Carga Stripe de forma asíncrona
   stripe?: Stripe;

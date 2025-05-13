@@ -64,13 +64,7 @@ public class CircuitService {
         }
     }
 
-    public Map<String, Object> generateCode(Circuit circuit, String token) throws Exception {
-        
-        if (circuit.getQubits() > 6) {
-            if (token == null)
-                throw new Exception("You must provide a token to generate a code for a circuit with more than 6 qubits");
-            proxyBEUsuarios.get().checkCredit(token);
-        }
+    public Map<String, Object> generateCode(Circuit circuit) throws Exception {
 
         String templateCode = this.readFile("ibm.local.txt");
         String code = circuit.generateCode(templateCode);
