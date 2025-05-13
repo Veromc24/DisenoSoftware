@@ -24,6 +24,9 @@ public class UserService {
     @Autowired
     private TokenStorageService tokenStorageService;
 
+    @Autowired
+    private SessionToken sessionToken;
+
 
     @Autowired
     private ProxyBEUsuarios proxyBEUsuarios;
@@ -35,6 +38,17 @@ public class UserService {
         return userDao.save(user);
     }
 
+    public void addCredit(String name, int amount) {
+    User user = userDao.findByName(name);
+    if (user == null) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+    }
+    userDao.delete(user);
+    user.setCredit(user.getCredit() + amount);
+    
+    userDao.save(user);
+    }
+
     public User getUserByEmail(String email) {
         return userDao.findByEmail(email);
     }
@@ -44,9 +58,10 @@ public class UserService {
         return userfound;
     }
 
-    public void checkUserCredit(String token) {
-        String result = proxyBEUsuarios.checkCredit(token);
-        if (result == null || result.isEmpty()) {
+    public void checkUserCredit(User user) {
+        // Lógica para verificar el crédito del usuario
+        int result=user.getCredit();
+        if (result<=0) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid or insufficient credit for user.");
         }
     }

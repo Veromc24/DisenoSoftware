@@ -100,6 +100,16 @@ export class PaymentsComponent {
       alert(error.message);
     } else if (paymentIntent && paymentIntent.status === 'succeeded') {
       alert('Pago exitoso');
+      this.service.addCredit(this.amount).subscribe(
+      (response) => {
+        console.log('Crédito añadido exitosamente:', response);
+        alert('Crédito añadido a tu cuenta.');
+      },
+      (error) => {
+        console.error('Error al añadir crédito:', error);
+        alert('Hubo un error al añadir el crédito.');
+      }
+    );
       // self.paymentsService.confirm().subscribe({ ... }); // Comentar esta parte según lo solicitado
     }
   }

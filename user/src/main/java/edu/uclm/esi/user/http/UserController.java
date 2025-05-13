@@ -20,11 +20,15 @@ import org.springframework.web.server.ResponseStatusException;
 import edu.uclm.esi.user.model.User;
 import edu.uclm.esi.user.services.EmailService;
 import edu.uclm.esi.user.services.UserService;
+import edu.uclm.esi.user.services.SessionToken;
 
 @RestController
 @RequestMapping("/users")
 @CrossOrigin(origins = "*")
 public class UserController {
+
+    @Autowired
+    private SessionToken sessionToken; 
 
     @Autowired
     private UserService userService;
@@ -40,28 +44,16 @@ public class UserController {
     }
 
     @GetMapping("/checkCredit")
-    public ResponseEntity<String> checkCredit(@RequestHeader("Authorization") String token) {
-        userService.checkUserCredit(token);
-        return ResponseEntity.ok("Credit is valid.");
-    }
-
-    @GetMapping("/login")
-    public String login(@RequestParam String name, @RequestParam String password) {
-        System.out.println("Nombre: " + name + ", Contraseña: " + password);
-        // Aquí puedes agregar la lógica para verificar el nombre de usuario y la contraseña
+    public ResponseEntity<String> checkCredit() {
+        String token = sessionToken.getToken(); // Obtener el token de la sesión actual
+        if (token == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No token provided");
+        }
+        // Verificar el crédito del usuario usando el usuario asociado al token
+        User user = sessionToken.getUser(token); // Obtener el usuario asociado al token
+        userService.checkUserCredit(user);
         
-
-        return "User logged in successfully";
-    }
-
-    @GetMapping("/loginConPathYParametro/{name}")
-    public String login2(@PathVariable String name, @RequestParam String password) {
-        return "1234";
-    }
-
-    @PostMapping("/loginConPathYBody/{name}")
-    public String loginConPathYBody(@PathVariable String name, @RequestBody String password) {
-        return "1234";
+        return ResponseEntity.ok("Credit is valid.");
     }
 
     @PostMapping("/loginConBody")       //Este es el método que se va a usar para el login
@@ -82,6 +74,8 @@ public class UserController {
         // Generar un token (puedes usar JWT u otro mecanismo)
         String token = "fake-jwt-token"; // Reemplaza con lógica real para generar tokens
 
+        sessionToken.saveToken(token, user);
+        
         Map<String, String> response = Map.of("token", token);
         return ResponseEntity.ok(response);
     }
@@ -110,6 +104,7 @@ public class UserController {
         Map<String, String> response = Map.of("message", "User created successfully");
         return ResponseEntity.ok(response);
     }
+
     @Autowired
     private EmailService emailService;
 
@@ -183,6 +178,17 @@ public class UserController {
         }
 
         Map<String, String> response = Map.of("message", "Token is valid");
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/addCredit")
+    public ResponseEntity<Map<String, String>> addCredit(@RequestBody Map<String, Object> data) {
+        String token = sessionToken.getToken(); // Obtener el token de la sesión actual
+        int amount = (int) data.get("amount");
+        User user = sessionToken.getUser(token); // Obtener el usuario asociado al token
+        userService.addCredit(user.getName(), amount);
+
+        Map<String, String> response = Map.of("message", "Credit added successfully");
         return ResponseEntity.ok(response);
     }
 }
