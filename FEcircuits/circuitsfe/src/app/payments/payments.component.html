@@ -1,14 +1,21 @@
-<button (click)="prepay()">Pagar 12 lereles</button>
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 10vh;">
+  <h2 style="text-align: center;">Pagos</h2>
+  <button (click)="prepay()">Abrir menú de pagos</button>
 
-<form id="payment-form" style="display:none">
-  <div id="card-element"></div>
-  <button id="submit">
-    <div class="spinner hidden" id="spinner"></div>
-    <span id="button-text">Pay now</span>
-  </button>
-  <p id="card-error" role="alert"></p>
-  <p class="result-message hidden">
-    Payment succeeded, see the result in your
-    <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.
-  </p>
-</form>
+  <form id="payment-form" style="display:none; text-align: center;">
+    <br>
+    <div style="border: 1px solid black; padding: 10px; border-radius: 5px;">
+      <div id="card-element"></div>
+    </div>
+    <br>
+    <button id="submit">
+      <div class="spinner hidden" id="spinner"></div>
+      <span id="button-text">Pay now</span>
+    </button>
+    <p id="card-error" role="alert"></p>
+    <p class="result-message hidden">
+      Payment succeeded, see the result in your
+      <a href="https://dashboard.stripe.com/test/dashboard" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.
+    </p>
+  </form>
+</div>
