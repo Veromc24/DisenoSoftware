@@ -59,7 +59,6 @@ public class UserService {
 
     public void sendPassword(String email, String token) {
         // Lógica para enviar la contraseña al usuario
-        System.out.println("Sending password to: " + email);
         if (!tokenStorageService.isTokenValid(token,email)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid or expired token.");
         }

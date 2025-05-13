@@ -142,7 +142,6 @@ public class UserController {
     public ResponseEntity<Map<String, String>> sendPasswordResetEmail(@RequestBody Map<String, String> data) {
         String email = data.get("email");
         String token = data.get("token");
-        System.out.println("Datos recibidos en /confirmPasswordRecovery: " + data);
         if (token == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing email parameter");
         }

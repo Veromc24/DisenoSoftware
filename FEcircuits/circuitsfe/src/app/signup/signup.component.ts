@@ -11,33 +11,47 @@ export class SignupComponent {
   name?: string;
   email?: string;
   password?: string;
+  token?: string;
 
   constructor(private usersService: UsersService) {}
   passwordErrors: string[] = [];
   passwordSuggestions: string[] = [];
+  showTokenField: boolean = false;
 
   signup() {
     if (!this.name || !this.email || !this.password) {
       alert('Por favor, complete todos los campos.');
       return;
     }
+    if (!this.email.includes('@')) {
+      alert('Por favor, ingrese un correo electrónico válido.');
+      return;
+    }
+    if(!this.showTokenField) {
+      this.showTokenField = true;
+    }else {
+      if (!this.name || !this.email || !this.password|| !this.token) {
+      alert('Por favor, complete todos los campos.');
+      return;
+    }
 
-    const user = {
-      name: this.name,
-      email: this.email,
-      password: this.password
-    };
+      const user = {
+        name: this.name,
+        email: this.email,
+        password: this.password
+      };
 
-     this.usersService.signup(user).subscribe(
-      (response) => {
-        console.log('Usuario registrado con éxito:', response);
-        alert('Registro exitoso. Ahora puede iniciar sesión.');
-      },
-      (error) => {
-        console.error('Error en el registro:', error);
-        alert('Hubo un error al registrarse. Inténtelo de nuevo.');
-      }
-    );
+      this.usersService.signup(user).subscribe(
+        (response) => {
+          console.log('Usuario registrado con éxito:', response);
+          alert('Registro exitoso. Ahora puede iniciar sesión.');
+        },
+        (error) => {
+          console.error('Error en el registro:', error);
+          alert('Hubo un error al registrarse. Inténtelo de nuevo.');
+        }
+      );
+    }
   }
 
   validatePassword() {

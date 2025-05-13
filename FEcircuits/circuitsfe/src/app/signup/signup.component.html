@@ -17,5 +17,10 @@
     <p *ngFor="let suggestion of passwordSuggestions" class="text-suggestion">{{ suggestion }}</p>
   </div>
   <br>
+  <div *ngIf="showTokenField">
+    <label for="token">Token:</label>
+    <input type="text" id="token" [(ngModel)]="token" name="token" required>
+    <br>
+  </div>
   <button type="submit" [disabled]="!signupForm.valid || passwordErrors.length > 0">Registrarse</button>
 </form>

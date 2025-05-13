@@ -17,10 +17,14 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private int credit;
+
     public User(String name, String password, String email) {
         this.name = name;
         this.password = password;
         this.email = email;
+        this.credit= 0; // Default credit value
     }
 
     public User() {
@@ -29,6 +33,14 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    public int getCredit() {
+        return credit;
+    }
+
+    public void setCredit(int credit) {
+        this.credit = credit;
     }
 
     public void setName(String name) {
