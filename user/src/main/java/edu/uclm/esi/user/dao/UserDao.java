@@ -10,4 +10,5 @@ public interface UserDao extends JpaRepository<User, String> {
     // JpaRepository proporciona operaciones CRUD básicas
 
     User findByName(String name);
+    boolean existsByName(String name);
 }

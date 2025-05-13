@@ -14,6 +14,7 @@ export class SignupComponent {
 
   constructor(private usersService: UsersService) {}
   passwordErrors: string[] = [];
+  passwordSuggestions: string[] = [];
 
   signup() {
     if (!this.name || !this.email || !this.password) {
@@ -41,6 +42,8 @@ export class SignupComponent {
 
   validatePassword() {
     this.passwordErrors = [];
+    this.passwordSuggestions = [];
+    // Validaciones
     if (this.password && this.password.length < 8) {
       this.passwordErrors.push('La contraseña debe tener al menos 8 caracteres.');
     }
@@ -55,6 +58,16 @@ export class SignupComponent {
     }
     if (this.password && !/[!@#$%^&*]/.test(this.password)) {
       this.passwordErrors.push('La contraseña debe contener al menos un carácter especial (!@#$%^&*).');
+    }
+    // Sugerencias
+    if (this.password && /^[A-Z][^A-Z]*$/.test(this.password)) {
+      this.passwordSuggestions.push('La contraseña contiene solo una letra mayúscula y está al inicio.\nSe sugiere poner más mayúsculas o en otras posiciones');
+    }
+    if (this.password && /^[^0-9]*[0-9]$/.test(this.password)) {
+      this.passwordSuggestions.push('La contraseña termina con un número y es el único número en la contraseña.');
+    }
+    if (this.password && /^[^!@#$%^&*]*[!@#$%^&*]$/.test(this.password)) {
+      this.passwordSuggestions.push('La contraseña termina con un carácter especial y es el único carácter especial en la contraseña.');
     }
   }
 }

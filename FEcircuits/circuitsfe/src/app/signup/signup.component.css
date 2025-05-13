@@ -36,3 +36,12 @@ button:disabled {
 .text-danger {
   color: red;
 }
+
+.suggestion-messages {
+  margin-top: 5px;
+  font-size: 0.9em;
+}
+
+.text-suggestion {
+  color: orange;
+}

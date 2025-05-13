@@ -1,10 +1,12 @@
-<h2>Iniciar Sesión</h2>
-<form (ngSubmit)="login()" #loginForm="ngForm">
-  <label for="name">Nombre:</label>
-  <input type="text" id="name" [(ngModel)]="name" name="name" required>
-  <br>
-  <label for="pwd">Contraseña:</label>
-  <input type="password" id="pwd" [(ngModel)]="pwd" name="pwd" required>
-  <br>
-  <button type="submit" [disabled]="!loginForm.valid">Iniciar Sesión</button>
-</form>
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 30vh;">
+  <h2 style="text-align: center;">Iniciar Sesión</h2>
+  <form (ngSubmit)="login()" #loginForm="ngForm" style="text-align: center;">
+    <label for="name" style="margin-right: 10px;">Nombre:</label>
+    <input type="text" id="name" [(ngModel)]="name" name="name" required>
+    <br><br>
+    <label for="pwd" style="margin-right: 10px;">Contraseña:</label>
+    <input type="password" id="pwd" [(ngModel)]="pwd" name="pwd" required>
+    <br><br>
+    <button type="submit" [disabled]="!loginForm.valid">Iniciar Sesión</button>
+  </form>
+</div>

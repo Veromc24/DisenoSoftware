@@ -18,7 +18,7 @@ public class UserService {
     private ProxyBEUsuarios proxyBEUsuarios;
 
     public User createUser(User user) {
-        if (userDao.existsById(user.getEmail())) {
+        if (userDao.existsByName(user.getName())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists with email: " + user.getEmail());
         }
         return userDao.save(user);
