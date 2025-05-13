@@ -29,28 +29,44 @@ export class SignupComponent {
     }
     if(!this.showTokenField) {
       this.showTokenField = true;
+      this.usersService.sendVerifyToken(this.email).subscribe(
+        (response: { success: boolean; message: string }) => {
+          console.log('Token enviado con éxito:', response);
+          alert('Token enviado a su correo electrónico. Por favor, verifique su bandeja de entrada.');
+        },
+        (error: any) => {
+          console.error('Error al enviar el token:', error);
+          alert('Hubo un error al enviar el token. Inténtelo de nuevo.');
+        });
     }else {
       if (!this.name || !this.email || !this.password|| !this.token) {
       alert('Por favor, complete todos los campos.');
       return;
-    }
+      }
+      if(!this.usersService.verifyToken(this.email, this.token)) {
+        alert('Token equivocado.');
+      }else{
 
-      const user = {
-        name: this.name,
-        email: this.email,
-        password: this.password
-      };
+        alert('Token correcto.');
+      
 
-      this.usersService.signup(user).subscribe(
-        (response) => {
-          console.log('Usuario registrado con éxito:', response);
-          alert('Registro exitoso. Ahora puede iniciar sesión.');
-        },
-        (error) => {
-          console.error('Error en el registro:', error);
-          alert('Hubo un error al registrarse. Inténtelo de nuevo.');
-        }
-      );
+        const user = {
+          name: this.name,
+          email: this.email,
+          password: this.password
+        };
+
+        this.usersService.signup(user).subscribe(
+          (response) => {
+            console.log('Usuario registrado con éxito:', response);
+            alert('Registro exitoso. Ahora puede iniciar sesión.');
+          },
+          (error) => {
+            console.error('Error en el registro:', error);
+            alert('Hubo un error al registrarse. Inténtelo de nuevo.');
+          }
+        );
+      }
     }
   }
 

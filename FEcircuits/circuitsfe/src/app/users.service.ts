@@ -32,4 +32,10 @@ export class UsersService {
   sendPasswordResetEmail(email: string,token:string): Observable<any> {
     return this.http.post(`${this.baseUrl}/sendPasswordResetEmail`, { email,token });
   }
+  sendVerifyToken(email: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/sendVerifyToken`, { email });
+  }
+  verifyToken(email: string, token: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/verifyToken`, { email, token });
+  }
 }

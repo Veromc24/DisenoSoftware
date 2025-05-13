@@ -155,4 +155,34 @@ public class UserController {
         Map<String, String> response = Map.of("message", "Contraseña enviada al correo");
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/sendVerifyToken")
+    public ResponseEntity<Map<String, String>> SendVerifyToken(@RequestBody Map<String, String> data) {
+        String email = data.get("email");
+        if (email == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing email parameter");
+        }
+
+        userService.sendTokenVerify(email);
+
+        Map<String, String> response = Map.of("message", "Token de verificación enviado al correo");
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/verifyToken")
+    public ResponseEntity<Map<String, String>> verifyToken(@RequestBody Map<String, String> data) {
+        String token = data.get("token");
+        String email = data.get("email");
+        if (token == null || email == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing token or email parameter");
+        }
+
+        boolean isValid = userService.verifyToken(token,email);
+        if (!isValid) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid or expired token");
+        }
+
+        Map<String, String> response = Map.of("message", "Token is valid");
+        return ResponseEntity.ok(response);
+    }
 }

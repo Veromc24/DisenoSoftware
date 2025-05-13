@@ -69,4 +69,19 @@ public class UserService {
         emailService.sendEmail(email, subject, body);
 
     }
+
+    public void sendTokenVerify(String email) {
+        // Token random generation
+        String token = java.util.UUID.randomUUID().toString();
+        tokenStorageService.saveToken(token, email, LocalDateTime.now().plusHours(1));
+        String subject = "Email Verification";
+        String body = "Your verification token is: "+token;
+
+        emailService.sendEmail(email, subject, body);
+    }
+
+    public boolean verifyToken(String token, String email) {
+        // Lógica para verificar el token
+        return tokenStorageService.isTokenValid(token,email);
+    }
 }
