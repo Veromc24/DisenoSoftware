@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +23,13 @@ export class UsersService {
       password: user.password
     };
     return this.http.post(`${this.baseUrl}/signup`, body);
+  }
+
+  recoverPassword(email: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/recoverPassword`, { email });
+  }
+
+  sendPasswordResetEmail(email: string,token:string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/sendPasswordResetEmail`, { email,token });
   }
 }

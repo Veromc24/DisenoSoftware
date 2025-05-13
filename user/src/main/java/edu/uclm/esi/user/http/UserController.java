@@ -1,6 +1,7 @@
 package edu.uclm.esi.user.http;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import edu.uclm.esi.user.model.User;
+import edu.uclm.esi.user.services.EmailService;
 import edu.uclm.esi.user.services.UserService;
 
 @RestController
@@ -106,6 +108,52 @@ public class UserController {
 
         // Respuesta en formato JSON
         Map<String, String> response = Map.of("message", "User created successfully");
+        return ResponseEntity.ok(response);
+    }
+    @Autowired
+    private EmailService emailService;
+
+    @PostMapping("/recoverPassword")
+    public ResponseEntity<Map<String, String>> recoverPassword(@RequestBody Map<String, String> data) {
+        String email = data.get("email");
+
+        if (email == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing email parameter");
+        }
+
+        User user = userService.getUserByEmail(email);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+
+        // Generar un token seguro (puedes usar UUID o JWT)
+        String token = UUID.randomUUID().toString(); // Generar un token único
+        userService.savePasswordRecoveryToken(email, token); // Guardar el token con temporalidad
+
+        // Enviar el token al correo electrónico del usuario
+        emailService.sendEmail(email, "Recuperación de Contraseña",
+            "Usa este token para recuperar tu contraseña: " + token);
+
+        Map<String, String> response = Map.of("message", "Correo de recuperación enviado");
+        return ResponseEntity.ok(response);
+    }
+
+     @PostMapping("/sendPasswordResetEmail")
+    public ResponseEntity<Map<String, String>> sendPasswordResetEmail(@RequestBody Map<String, String> data) {
+        String email = data.get("email");
+        String token = data.get("token");
+        System.out.println("Datos recibidos en /confirmPasswordRecovery: " + data);
+        if (token == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing email parameter");
+        }
+
+        if (email == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing email parameter");
+        }
+
+        userService.sendPassword(email,token);
+
+        Map<String, String> response = Map.of("message", "Contraseña enviada al correo");
         return ResponseEntity.ok(response);
     }
 }

@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms'; // Necesario para [(ngModel)]
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { SignupComponent } from './signup/signup.component';
+import { RecoverPasswordComponent } from './recover-password/recover-password.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { SignupComponent } from './signup/signup.component';
     LoginComponent,
     CircuitComponent,
     SignupComponent,
+    RecoverPasswordComponent,
     //PaymentsComponent
   ],
   imports: [
