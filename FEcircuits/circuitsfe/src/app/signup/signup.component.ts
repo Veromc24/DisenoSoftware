@@ -89,6 +89,10 @@ export class SignupComponent {
     if (this.password && !/[!@#$%^&*]/.test(this.password)) {
       this.passwordErrors.push('La contraseña debe contener al menos un carácter especial (!@#$%^&*).');
     }
+    if (this.password && /[ ]/.test(this.password)) {
+      this.passwordErrors.push('La contraseña no debe contener espacios.');
+    }
+    
     // Sugerencias
     if (this.password && /^[A-Z][^A-Z]*$/.test(this.password)) {
       this.passwordSuggestions.push('La contraseña contiene solo una letra mayúscula y está al inicio.\nSe sugiere poner más mayúsculas o en otras posiciones');

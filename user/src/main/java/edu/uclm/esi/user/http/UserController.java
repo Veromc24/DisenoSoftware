@@ -105,6 +105,9 @@ public class UserController {
             System.err.println("Faltan parámetros: name=" + name + ", password=" + password + ", email=" + email);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing parameters");
         }
+        if (!name.matches("^[a-zA-Z0-9._-]{3,}$") || !password.matches("^[a-zA-Z0-9@#$%^&+=]{6,}$")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid input format");
+        }
 
         System.out.println("Nombre: " + name + ", Email: " + email + ", Contraseña: " + password);
 
@@ -197,7 +200,17 @@ public class UserController {
     @PostMapping("/addCredit")
     public ResponseEntity<Map<String, String>> addCredit(@RequestBody Map<String, Object> data) {
         String token = sessionToken.getToken(); // Obtener el token de la sesión actual
-        int amount = (int) data.get("amount");
+
+        // Validar que el parámetro amount sea un número entero positivo
+        Object amountObj = data.get("amount");
+        if (amountObj == null || !(amountObj instanceof Number)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid or missing amount");
+        }
+        int amount = ((Number) amountObj).intValue();
+        if (amount <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Amount must be positive");
+        }
+
         User user = sessionToken.getUser(); // Obtener el usuario asociado al token
         userService.addCredit(user.getName(), amount);
 
@@ -211,12 +224,16 @@ public class UserController {
         String token = sessionToken.getToken(); // Obtener el token de la sesión actual
         int amount = (int) data.get("amount");
         User user = sessionToken.getUser(); // Obtener el usuario asociado al token
+        if (amount >= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Amount must be negative");
+        }
         
         userService.payCredit(user, amount);
 
         Map<String, String> response = Map.of("message", "Credit paid successfully");
         return ResponseEntity.ok(response);
     }
+
     @GetMapping("/deleteToken")
     public ResponseEntity<Map<String, String>> deleteToken() {
         String token = sessionToken.getToken();
