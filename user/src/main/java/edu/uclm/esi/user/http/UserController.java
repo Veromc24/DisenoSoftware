@@ -211,10 +211,19 @@ public class UserController {
         Map<String, String> response = Map.of("message", "Credit paid successfully");
         return ResponseEntity.ok(response);
     }
-    @PostMapping("/logout")
-    public ResponseEntity<Map<String, String>> logout() {
-        sessionToken.clearTokens();
+    @GetMapping("/checkSession")
+    public ResponseEntity<Map<String, String>> checkSession() {
+        System.out.println("Comprobando sesión...");
+        String token = sessionToken.getToken();
+        if(sessionToken.isTokenValid(token)&&token!=null){
         Map<String, String> response = Map.of("message", "Logout successful");
+        sessionToken.clearTokens();
         return ResponseEntity.ok(response);
+        
+        }
+        else{
+            Map<String, String> response = Map.of("message", "Session expired");
+            return ResponseEntity.ok(response);
+        }
     }
 }
