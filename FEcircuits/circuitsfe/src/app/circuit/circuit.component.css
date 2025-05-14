@@ -1,5 +1,5 @@
 body {
-  background-color: #f8f9fa;
+  background-color: #202024; /* Hereda el color de fondo global */
 }
 
 h2 {
@@ -8,8 +8,17 @@ h2 {
 
 .table {
   margin-top: 20px;
+  background-color: #202024;
 }
 
 button {
   margin: 5px;
+}
+
+div {
+    background-color: #202024;
+}
+
+body, div, h2, label, input, td, span {
+    color: inherit;
 }

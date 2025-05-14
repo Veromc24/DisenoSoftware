@@ -21,6 +21,7 @@ button {
   color: white;
   border: none;
   cursor: pointer;
+  border-radius: 10px;
 }
 
 button:disabled {
@@ -44,4 +45,16 @@ button:disabled {
 
 .text-suggestion {
   color: orange;
+}
+
+input{
+  border-radius: 10px;
+}
+
+div {
+  background-color: #202024;
+}
+
+body, div, h2, label {
+    color: inherit;
 }

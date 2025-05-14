@@ -1,0 +1,7 @@
+form, div {
+    background-color: white;
+}
+
+body, div, h2, label, input, button {
+    color: inherit;
+}

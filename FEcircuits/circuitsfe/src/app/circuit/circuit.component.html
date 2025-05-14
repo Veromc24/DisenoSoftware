@@ -1,7 +1,7 @@
-<div class="container mt-4">
+<div class="container mt-4" style="background-color: #202024; border-radius: 10px; padding: 20px;" >
   <h2 class="text-center mb-4">Gestión de Circuitos</h2>
 
-  <div class="row mb-3">
+  <div class="row mb-3" >
     <div class="col-md-6">
       <label for="inputQubits" class="form-label"><strong>Number of input qubits</strong></label>
       <input id="inputQubits" type="number" class="form-control" [(ngModel)]="inputQubits" min="1">
@@ -21,7 +21,7 @@
     <button class="btn btn-primary" (click)="buildMatrix()" [disabled]="inputQubits <= 0 || outputQubits <= 0">Build Matrix</button>
   </div>
 
-  <table class="table table-bordered table-striped" *ngIf="showMatrix">
+  <table class="table table-bordered table-striped" *ngIf="showMatrix" style="background-color: #202024;">
     <tbody>
       
       

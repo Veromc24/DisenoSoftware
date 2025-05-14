@@ -1,0 +1,13 @@
+body, div, h2, label{
+    color: inherit;
+}
+
+input {
+    border-radius: 10px;
+}
+
+button{
+    border-radius: 10px;
+    background-color:  #007bff;
+    color: white;
+}

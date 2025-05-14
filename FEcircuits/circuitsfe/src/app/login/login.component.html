@@ -1,6 +1,6 @@
 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 30vh;">
   <h2 style="text-align: center;">Iniciar Sesión</h2>
-  <div style="border: 1px solid #ccc; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 50%; text-align: center;">
+  <div id="div2" style="background-color: #202024; padding: 20px; border-radius: 10px; width: 50%; text-align: center;">
     <form (ngSubmit)="login()" #loginForm="ngForm">
       <label for="name" style="margin-right: 10px;">Nombre:</label>
       <br>
@@ -10,7 +10,7 @@
       <br>
       <input type="password" id="pwd" [(ngModel)]="pwd" name="pwd" required>
       <br><br>
-      <button type="submit" [disabled]="!loginForm.valid">Iniciar Sesión</button>
+      <button type="submit" [disabled]="!loginForm.valid" style="border: none;">Iniciar Sesión</button>
     </form>
   </div>
 </div>
