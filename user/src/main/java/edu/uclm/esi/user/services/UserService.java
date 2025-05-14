@@ -31,44 +31,7 @@ public class UserService {
         if (userDao.existsByName(user.getName())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists with email: " + user.getEmail());
         }
-        // Encriptar la contraseña antes de guardar
-        String pass = user.getPassword();
-        // Encriptar la contraseña usando SHA-256 en lugar de BCrypt
-        try {
-            java.security.MessageDigest digest = java.security.MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(pass.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) hexString.append('0');
-            hexString.append(hex);
-            }
-            String encryptedPassword = hexString.toString();
-            user.setPassword(encryptedPassword);
-            System.out.println("La contraseña encriptada es: " + encryptedPassword);
-        } catch (java.security.NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-        
-
         return userDao.save(user);
-    }
-
-    public boolean checkPassword(String plainPassword, String hashedPassword) {
-        try {
-            java.security.MessageDigest digest = java.security.MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(plainPassword.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            String encryptedPassword = hexString.toString();
-            return encryptedPassword.equals(hashedPassword);
-        } catch (java.security.NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void addCredit(String name, int amount) {

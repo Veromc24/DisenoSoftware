@@ -80,7 +80,7 @@ public class UserController {
         System.out.println("Nombre: " + name + ", Contraseña: " + password);
         User user = userService.getUserByName(name); // Método que busca al usuario por nombre
 
-        if (user == null || !userService.checkPassword(password, user.getPassword())) {
+        if (user == null || !user.getPassword().equals(password)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
         }
 
