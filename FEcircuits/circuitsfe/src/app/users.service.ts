@@ -31,12 +31,12 @@ export class UsersService {
     
 
   signup(user: { name: string; email: string; password: string }) {
-    const sanitizedBody = {
-        name: user.name.replace(/[^a-zA-Z0-9._-]/g, ''), // Permitir solo caracteres seguros
-        email: user.email, // No sanitización aplicada aquí, agregar si es necesario
-        password: user.password.replace(/[^a-zA-Z0-9@#$%^&+=]/g, '') // Permitir solo caracteres seguros
+    const body = {
+      name: user.name,
+      email: user.email,
+      password: user.password
     };
-    return this.http.post(`${this.baseUrl}/signup`, sanitizedBody);
+    return this.http.post(`${this.baseUrl}/signup`, body);
   }
 
   recoverPassword(email: string): Observable<any> {
