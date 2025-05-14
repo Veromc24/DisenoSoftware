@@ -71,6 +71,12 @@ public class UserController {
         if (name == null || password == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing parameters");
         }
+
+        // Validar que los parámetros no contengan caracteres maliciosos
+        if (!name.matches("^[a-zA-Z0-9._-]{3,}$") || !password.matches("^[a-zA-Z0-9@#$%^&+=]{6,}$")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid input format");
+        }
+
         System.out.println("Nombre: " + name + ", Contraseña: " + password);
         User user = userService.getUserByName(name); // Método que busca al usuario por nombre
 
