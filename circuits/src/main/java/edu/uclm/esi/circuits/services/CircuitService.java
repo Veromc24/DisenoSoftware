@@ -54,7 +54,11 @@ public class CircuitService {
             circuit.setOutputQubits(outputQubits);
             circuit.setName(name); // Asignar el nombre al circuito
 
-            this.circuitDAO.save(circuit);
+
+            if (table.length > 6) {
+                this.circuitDAO.save(circuit);
+            }
+            
 
             return "Circuit created successfully with ID: " + circuit.getId();
         } catch (ResponseStatusException e) {

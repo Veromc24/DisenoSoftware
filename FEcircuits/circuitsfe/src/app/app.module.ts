@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { SignupComponent } from './signup/signup.component';
 import { RecoverPasswordComponent } from './recover-password/recover-password.component';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { RecoverPasswordComponent } from './recover-password/recover-password.co
     CircuitComponent,
     SignupComponent,
     RecoverPasswordComponent,
+    LogoutComponent,
     //PaymentsComponent
   ],
   imports: [

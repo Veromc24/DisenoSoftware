@@ -16,6 +16,21 @@ export class UsersService {
     return this.http.post(`${this.baseUrl}/loginConBody`, body, { responseType: 'json' });
   }
 
+  logout(){
+    this.http.post(`${this.baseUrl}/logout`, {}).subscribe({
+      next: (response) => {
+        console.log('Logout exitoso:', response);
+        alert('Logout exitoso.');
+      },
+      error: (error) => {
+        console.error('Error en el logout:', error);
+        alert('Error al cerrar sesión. Inténtelo de nuevo.');
+      }
+    });
+
+
+  }
+
   signup(user: { name: string; email: string; password: string }) {
     const body = {
       name: user.name,

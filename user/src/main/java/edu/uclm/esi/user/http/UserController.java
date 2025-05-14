@@ -48,15 +48,18 @@ public class UserController {
         String token = sessionToken.getToken();
         User user = sessionToken.getUser();
 
-        try {
-            userService.checkUserCredit(user); 
+        if(userService.checkUserCredit(user)){
             System.out.println("Token: " + token);
             Map<String, String> response = new HashMap<>();
             response.put("message", "Crédito verificado correctamente");
             System.out.println("Respuesta: " + response);
             return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Token inválido o expirado"));
+        } else {
+            System.out.println("Token: " + token);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Crédito insuficiente");
+            System.out.println("Respuesta: " + response);
+            return ResponseEntity.ok(response);
         }
     }
 
@@ -75,8 +78,8 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
         }
 
-        // Generar un token (puedes usar JWT u otro mecanismo)
-        String token = "fake-jwt-token"; // Reemplaza con lógica real para generar tokens
+        // Generar un token aleatorio UUID
+        String token = UUID.randomUUID().toString();
 
         sessionToken.saveToken(token, user);
         
@@ -206,6 +209,12 @@ public class UserController {
         userService.payCredit(user, amount);
 
         Map<String, String> response = Map.of("message", "Credit paid successfully");
+        return ResponseEntity.ok(response);
+    }
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, String>> logout() {
+        sessionToken.clearTokens();
+        Map<String, String> response = Map.of("message", "Logout successful");
         return ResponseEntity.ok(response);
     }
 }

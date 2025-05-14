@@ -58,12 +58,17 @@ public class UserService {
         return userfound;
     }
 
-    public void checkUserCredit(User user) {
+    public boolean checkUserCredit(User user) {
         // Lógica para verificar el crédito del usuario
         System.out.println("El nombre es: "+user.getName());
         int result=user.getCredit();
+        System.out.println("El credito es: "+result);
         if (result<=0) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid or insufficient credit for user.");
+            System.out.println("El credito es menor o igual a 0");
+            return false;
+        }else {
+            System.out.println("El credito es mayor a 0");
+            return true;
         }
     }
 
