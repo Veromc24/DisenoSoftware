@@ -18,6 +18,7 @@ export class CircuitComponent {
   retrievedCircuit: any = null; // Variable para almacenar el circuito recuperado
   creationMessage: string = ''; // Nueva propiedad para almacenar mensajes de creación
   circuitName: string = ''; // Nueva propiedad para el nombre del circuito
+  generatedCode: string = ''; // Nueva variable para el código generado
 
   constructor(private service: CircuitService) {  // Inyectar el servicio correctamente
     this.inputQubits = 3;
@@ -36,13 +37,14 @@ export class CircuitComponent {
   }
 
   generateCode() {
-
-    this.service.generateCode(this.outputQubits, this.matrix! ).subscribe(
-      (ok: any) => {
-        console.log("Todo ha salido bien");
+    this.service.generateCode(this.outputQubits, this.matrix!).subscribe(
+      (result: any) => {
+        console.log("Código generado:", result.code);
+        this.generatedCode = result.code; // Guarda el código recibido
       },
       (error: any) => {
         console.error("Algo ha ido mal", error);
+        this.generatedCode = 'Error al generar el código.';
       }
     );
   }

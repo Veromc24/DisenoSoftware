@@ -41,6 +41,12 @@
           <button class="btn btn-warning" (click)="generateCode()">Generate Code</button>
         </td>
       </tr>
+      <tr *ngIf="generatedCode">
+        <td [attr.colspan]="inputQubits + outputQubits">
+          <h5>Código generado:</h5>
+          <pre style="background:#23272e; color:#eee; border-radius:8px; padding:12px; overflow-x:auto;">{{ generatedCode }}</pre>
+        </td>
+      </tr>
       <tr>
         <td [attr.colspan]="inputQubits + outputQubits" class="text-center">
           <p *ngIf="creationMessage && creationMessage.includes('ID:')" class="text-success">
