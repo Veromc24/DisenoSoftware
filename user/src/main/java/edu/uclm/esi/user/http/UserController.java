@@ -211,9 +211,8 @@ public class UserController {
         Map<String, String> response = Map.of("message", "Credit paid successfully");
         return ResponseEntity.ok(response);
     }
-    @GetMapping("/checkSession")
-    public ResponseEntity<Map<String, String>> checkSession() {
-        System.out.println("Comprobando sesión...");
+    @GetMapping("/deleteToken")
+    public ResponseEntity<Map<String, String>> deleteToken() {
         String token = sessionToken.getToken();
         if(sessionToken.isTokenValid(token)&&token!=null){
         Map<String, String> response = Map.of("message", "Logout successful");
@@ -223,6 +222,20 @@ public class UserController {
         }
         else{
             Map<String, String> response = Map.of("message", "Session expired");
+            return ResponseEntity.ok(response);
+        }
+    }
+
+    @GetMapping("/checkSession")
+    public ResponseEntity<Map<String, String>> checkSession() {
+        String token = sessionToken.getToken();
+        if(sessionToken.isTokenValid(token)&&token!=null){
+        Map<String, String> response = Map.of("message", "Token found");
+        return ResponseEntity.ok(response);
+        
+        }
+        else{
+            Map<String, String> response = Map.of("message", "No token");
             return ResponseEntity.ok(response);
         }
     }

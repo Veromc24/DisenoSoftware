@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { UsersService } from '../users.service';
 import { ManagerService } from '../manager.service';
 
@@ -9,6 +9,8 @@ import { ManagerService } from '../manager.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  @Output() loginSuccess = new EventEmitter<void>();
+
   name?: string;
   pwd?: string;
 
@@ -25,6 +27,7 @@ export class LoginComponent {
         console.log('Inicio de sesión exitoso:', response);
         alert('Inicio de sesión exitoso.');
         sessionStorage.setItem('token', response.token); // Guardar el token en el almacenamiento de sesión
+        this.loginSuccess.emit();
       },
       (error) => {
         console.error('Error en el login:', error);

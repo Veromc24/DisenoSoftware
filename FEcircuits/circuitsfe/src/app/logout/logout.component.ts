@@ -14,7 +14,7 @@ export class LogoutComponent {
 
 
   logout() {
-    this.usersService.checkSession().subscribe({
+    this.usersService.deleteToken().subscribe({
       next: (response: any) => {
         if (response.message === "Logout successful") {
           alert("Cerrando sesión...");

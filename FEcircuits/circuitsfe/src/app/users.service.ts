@@ -16,8 +16,8 @@ export class UsersService {
     return this.http.post(`${this.baseUrl}/loginConBody`, body, { responseType: 'json' });
   }
 
-  checkSession() {
-    return this.http.get(`${this.baseUrl}/checkSession`, { responseType: 'json' });
+  deleteToken() {
+    return this.http.get(`${this.baseUrl}/deleteToken`, { responseType: 'json' });
   }
     
 

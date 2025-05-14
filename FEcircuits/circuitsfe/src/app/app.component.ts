@@ -8,4 +8,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'circuitsfe';
+
+  mostrarPagos() {
+  const payments = document.getElementById('Pay');
+  if (payments) {
+    payments.style.display = 'block'; // o 'flex', según tu diseño
+  }
+}
+
+
 }
