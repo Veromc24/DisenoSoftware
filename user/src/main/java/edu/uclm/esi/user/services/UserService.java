@@ -29,7 +29,6 @@ public class UserService {
 
 
     @Autowired
-    private ProxyBEUsuarios proxyBEUsuarios;
 
     public User createUser(User user) {
         if (userDao.existsByName(user.getName())) {

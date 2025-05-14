@@ -1,25 +1,29 @@
-<div style="display: flex; flex-direction: column; height: 10vh;">
-<h2>Bienvenido</h2>
+<div class="rounded-lg p-4 w-full h-screen">
+  <div style="display: flex; flex-direction: column; height: 10vh; justify-content: center;">
+    <h2>Bienvenido</h2>
+    <app-logout></app-logout>
+  </div>
 
-<app-logout></app-logout>
+  <!-- Espaciado con margen en lugar de <br> -->
+  <div style="margin-bottom: 20px;">
+    <app-signup></app-signup>
+  </div>
+  
+  <div style="margin-bottom: 20px;">
+    <app-login (loginSuccess)="mostrarPagos()"></app-login>
+  </div>
+
+  <div style="margin-bottom: 20px;">
+    <app-recover-password></app-recover-password>
+  </div>
+
+  <div style="margin-bottom: 20px;">
+    <app-circuit></app-circuit>
+  </div>
+
+  <!-- Espacio extra, ajustable según el diseño -->
+  <div style="margin-bottom: 40px;"></div>
+
+  <app-payments id="Pay" style="display:none"></app-payments>
+  <router-outlet></router-outlet>
 </div>
-<br>
-<br>
-<app-signup></app-signup>
-<br>
-<br>
-<app-login (loginSuccess)="mostrarPagos()"></app-login>
-<br>
-<br>
-<app-recover-password></app-recover-password>
-<br>
-<br>
-<app-circuit></app-circuit>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<app-payments id="Pay" style="display:none"></app-payments>
-<router-outlet/>
