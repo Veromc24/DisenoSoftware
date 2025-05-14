@@ -88,12 +88,8 @@ public class UserService {
     }
 
     public User getUserByName(String name) {
-        if (name == null || name.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name cannot be null or empty");
-        }
-
-        // Uso de consulta parametrizada para evitar inyecciones SQL
-        return userDao.findByName(name);
+        User userfound = userDao.findByName(name);
+        return userfound;
     }
 
     public boolean checkUserCredit(User user) {

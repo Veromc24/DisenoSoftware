@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { HttpParams } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +12,8 @@ export class UsersService {
   constructor(private http: HttpClient) {}
 
   login(name: string, password: string) {
-    // Validar y sanitizar las entradas
-    if (!name || !password) {
-        throw new Error('El nombre de usuario y la contraseña son obligatorios.');
-    }
-
-    const sanitizedBody = {
-        name: name.replace(/[^a-zA-Z0-9._-]/g, ''), // Permitir solo caracteres seguros
-        password: password.replace(/[^a-zA-Z0-9@#$%^&+=]/g, '') // Permitir solo caracteres seguros
-    };
-
-    return this.http.post(`${this.baseUrl}/loginConBody`, sanitizedBody, { responseType: 'json' });
+    const body = { name, password };
+    return this.http.post(`${this.baseUrl}/loginConBody`, body, { responseType: 'json' });
   }
 
   deleteToken() {
