@@ -31,7 +31,6 @@ public class UserService {
         if (userDao.existsByName(user.getName())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists with email: " + user.getEmail());
         }
-        
         // Encriptar la contraseña antes de guardar
         String pass = user.getPassword();
         // Encriptar la contraseña usando SHA-256 en lugar de BCrypt
