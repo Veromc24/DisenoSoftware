@@ -124,6 +124,8 @@ public class UserService {
         // Lógica para verificar el crédito del usuario
         System.out.println("El nombre es: "+user.getName());
         int result=user.getCredit();
+        System.out.println("El credito es: "+user.getCredit());
+        System.out.println("El credito es: "+user.getName());
         System.out.println("El credito es: "+result);
         if (result<=0) {
             System.out.println("El credito es menor o igual a 0");

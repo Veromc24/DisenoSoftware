@@ -3,14 +3,19 @@ package edu.uclm.esi.user.services;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.uclm.esi.user.dao.UserDao;
 import edu.uclm.esi.user.model.User;
 
 @Service
 public class SessionToken {
 
     private final ConcurrentHashMap<String, User> tokenStore = new ConcurrentHashMap<>();
+
+    @Autowired
+    private UserDao userDao; // Make sure this import matches your actual UserDao package
 
     public void saveToken(String token, User user) {
         if(tokenStore.isEmpty()) {
@@ -27,6 +32,8 @@ public class SessionToken {
         for(User user:users){
             finalUser = user;
         }
+
+        finalUser = userDao.findByName(finalUser.getName());
         return finalUser;
     }
 
