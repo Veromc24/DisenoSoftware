@@ -33,13 +33,20 @@ public class TokenStorageService {
 
     public boolean isTokenValid(String token, String email) {
         TokenInfo tokenInfo = tokenStore.get(token);
+        System.out.println("Token: " + token + ", Email: " + email);
+        System.out.println("TokenInfo: " + tokenInfo);
+        
         return tokenInfo != null && LocalDateTime.now().isBefore(tokenInfo.getExpiration())&&email.equals(tokenInfo.getEmail());
     }
 
-    public void clearExpiredTokens() {
-        LocalDateTime now = LocalDateTime.now();
-        tokenStore.entrySet().removeIf(entry -> entry.getValue().getExpiration().isBefore(now));
+    public void removeToken(String token) {
+        tokenStore.remove(token);
     }
 
-
+    
+    public void printTokens() {
+        tokenStore.forEach((token, info) -> {
+            System.out.println("Token: " + token + ", Email: " + info.getEmail() + ", Expiration: " + info.getExpiration());
+        });
+    }
 }

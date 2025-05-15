@@ -153,7 +153,7 @@ public class UserService {
         String password = userDao.findByEmail(email).getPassword();
         String subject = "Password Recovery";
         String body = "Your password is: "+password;
-
+        tokenStorageService.removeToken(token);
         emailService.sendEmail(email, subject, body);
 
     }
@@ -170,7 +170,15 @@ public class UserService {
 
     public boolean verifyToken(String token, String email) {
         // Lógica para verificar el token
-        return tokenStorageService.isTokenValid(token,email);
+        boolean valid= tokenStorageService.isTokenValid(token,email);
+        if (!valid) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid or expired token.");
+        }
+        else{
+            tokenStorageService.removeToken(token);
+        }
+        tokenStorageService.printTokens();
+        return valid;
     }
 
     public void payCredit(User user, int amount) {

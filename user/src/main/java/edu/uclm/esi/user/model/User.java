@@ -9,10 +9,11 @@ import jakarta.persistence.Table;
 @Table(name = "usuarios")
 public class User {
     @Id
-    private String email;
-
-    @Column(name = "Username", nullable = false) // Map to the correct column name
+    @Column(name = "Username", nullable = false)
     private String name;
+
+    @Column(nullable = false, unique = true)
+    private String email;
 
     @Column(nullable = false)
     private String password;
@@ -54,7 +55,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public String getEmail() {
         return email;
