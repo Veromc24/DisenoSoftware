@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CircuitService } from '../circuit.service';  // Asegúrate de importar el servicio desde la ubicación correcta
 import { Matrix } from './Matrix';
 
@@ -9,6 +9,7 @@ import { Matrix } from './Matrix';
   styleUrls: ['./circuit.component.css']  // Corregí styleUrl a styleUrls
 })
 export class CircuitComponent {
+  @Output() creditsChanged = new EventEmitter<void>();
   inputQubits: number;
   outputQubits: number;
   matrix: Matrix;
@@ -39,11 +40,11 @@ export class CircuitComponent {
   generateCode() {
     this.service.generateCode(this.outputQubits, this.matrix!).subscribe(
       (result: any) => {
-        console.log("Código generado:", result.code);
-        this.generatedCode = result.code; // Guarda el código recibido
+        this.generatedCode = result.code;
+        // Emitir evento después de descontar crédito
+        this.creditsChanged.emit();
       },
       (error: any) => {
-        console.error("Algo ha ido mal", error);
         this.generatedCode = 'Error al generar el código.';
       }
     );

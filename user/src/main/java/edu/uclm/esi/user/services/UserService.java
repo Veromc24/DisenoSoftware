@@ -27,6 +27,9 @@ public class UserService {
     @Autowired
     private SessionToken sessionToken;
 
+
+    
+
     public User createUser(User user) {
         if (userDao.existsByName(user.getName())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists with email: " + user.getEmail());

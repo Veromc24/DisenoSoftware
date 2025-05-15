@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { PaymentsService } from '../payments.service';
 import { loadStripe, Stripe, StripeElements, StripeCardElement } from '@stripe/stripe-js';
 
@@ -8,6 +8,7 @@ import { loadStripe, Stripe, StripeElements, StripeCardElement } from '@stripe/s
   styleUrls: ['./payments.component.css']
 })
 export class PaymentsComponent {
+  @Output() creditsChanged = new EventEmitter<void>();
   amount: number = 3;
   transactionId?: string;
   stripePromise = loadStripe('pk_test_51RHR37IsgNFjbH8wZzoLwgL3ZsHtSVxY4QpoRiy8XNq6bI9yIMDAkNbSLcUBwEZxQYWWbIr2AEyieO08XDAED07r00dm808gpU'); // Carga Stripe de forma asíncrona
@@ -101,16 +102,17 @@ export class PaymentsComponent {
     } else if (paymentIntent && paymentIntent.status === 'succeeded') {
       alert('Pago exitoso');
       this.service.addCredit(this.amount).subscribe(
-      (response) => {
-        console.log('Crédito añadido exitosamente:', response);
-        alert('Crédito añadido a tu cuenta.');
-      },
-      (error) => {
-        console.error('Error al añadir crédito:', error);
-        alert('Hubo un error al añadir el crédito.');
-      }
-    );
-      // self.paymentsService.confirm().subscribe({ ... }); // Comentar esta parte según lo solicitado
+        (response) => {
+          alert('Crédito añadido a tu cuenta.');
+          const currentCredits = Number(localStorage.getItem('credits')) || 0;
+          localStorage.setItem('credits', (currentCredits + this.amount).toString());
+          this.creditsChanged.emit(); // Notifica al componente padre para actualizar créditos
+        },
+        (error) => {
+          console.error('Error al añadir crédito:', error);
+          alert('Hubo un error al añadir el crédito.');
+        }
+      );
     }
   }
 }

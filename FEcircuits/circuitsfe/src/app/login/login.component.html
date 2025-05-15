@@ -12,5 +12,9 @@
       <br><br>
       <button type="submit" [disabled]="!loginForm.valid" style="border: none;">Iniciar Sesión</button>
     </form>
+    <div *ngIf="showTokenField" style="margin-top: 15px;">
+    <label for="token">Token de verificación:</label>
+    <input type="text" id="token" [(ngModel)]="token" name="token" required style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+  </div>
   </div>
 </div>

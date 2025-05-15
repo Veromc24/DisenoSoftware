@@ -29,7 +29,10 @@ export class UsersService {
     return this.http.get(`${this.baseUrl}/deleteToken`, { responseType: 'json' });
   }
     
-
+  getEmail(name: string): Observable<{ email: string }> {
+    return this.http.get<{ email: string }>(`${this.baseUrl}/getEmail?name=${name}`);
+  }
+  
   signup(user: { name: string; email: string; password: string }) {
     const body = {
       name: user.name,
@@ -51,5 +54,12 @@ export class UsersService {
   }
   verifyToken(email: string, token: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/verifyToken`, { email, token });
+  }
+
+  getCredits(name: string) {
+    return this.http.post<{ credits: number, username: string }>(
+      `${this.baseUrl}/getCredits`,
+      { name }
+    );
   }
 }

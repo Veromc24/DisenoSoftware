@@ -1,6 +1,9 @@
 <div class="rounded-lg p-4 w-full h-screen">
   <div style="display: flex; flex-direction: column; height: 10vh; justify-content: center;">
-    <h2>Bienvenido</h2>
+    <h2>
+      Bienvenido <span>{{ Username }}</span>
+      <span >| Créditos: {{ Credits }}</span>
+    </h2>
     <app-logout></app-logout>
   </div>
 
@@ -10,7 +13,7 @@
   </div>
   
   <div style="margin-bottom: 20px;">
-    <app-login (loginSuccess)="mostrarPagos()"></app-login>
+    <app-login (creditsChanged)="updateCredits()" (loginSuccess)="mostrarPagos()"></app-login>
   </div>
 
   <div style="margin-bottom: 20px;">
@@ -18,12 +21,12 @@
   </div>
 
   <div style="margin-bottom: 20px;">
-    <app-circuit></app-circuit>
+    <app-circuit  (creditsChanged)="updateCredits()"></app-circuit>
   </div>
 
   <!-- Espacio extra, ajustable según el diseño -->
   <div style="margin-bottom: 40px;"></div>
 
-  <app-payments id="Pay" style="display:none"></app-payments>
+  <app-payments id="Pay" style="display:none" (creditsChanged)="updateCredits()"></app-payments>
   <router-outlet></router-outlet>
 </div>
