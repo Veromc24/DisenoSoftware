@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,22 +45,22 @@ public class UserController {
     }
 
     @GetMapping("/checkCredit")
-    public ResponseEntity<Map<String, String>> checkCredit() {
-
-        String token = sessionToken.getToken();
-        User user = sessionToken.getUser();
-
-        if(userService.checkUserCredit(user)){
-            System.out.println("Token: " + token);
+    public ResponseEntity<Map<String, String>> checkCredit(@RequestHeader(value = "Authorization", required = false) String authHeader) {
+        String token = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+        if (token == null || !sessionToken.isTokenValid(token)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid or missing token");
+        }
+        User user = sessionToken.getUser(token);
+        if (userService.checkUserCredit(user)) {
             Map<String, String> response = new HashMap<>();
             response.put("message", "Crédito verificado correctamente");
-            System.out.println("Respuesta: " + response);
             return ResponseEntity.ok(response);
         } else {
-            System.out.println("Token: " + token);
             Map<String, String> response = new HashMap<>();
             response.put("message", "Crédito insuficiente");
-            System.out.println("Respuesta: " + response);
             return ResponseEntity.ok(response);
         }
     }
@@ -198,10 +199,12 @@ public class UserController {
     }
 
     @PostMapping("/addCredit")
-    public ResponseEntity<Map<String, String>> addCredit(@RequestBody Map<String, Object> data) {
-        String token = sessionToken.getToken(); // Obtener el token de la sesión actual
+    public ResponseEntity<Map<String, String>> addCredit(
+        @RequestBody Map<String, Object> data) {
+
+        String token = sessionToken.getToken();
         int amount = (int) data.get("amount");
-        User user = sessionToken.getUser(); // Obtener el usuario asociado al token
+        User user = sessionToken.getUser(token); // Obtener el usuario asociado al token
         userService.addCredit(user.getName(), amount);
 
         Map<String, String> response = Map.of("message", "Credit added successfully");
@@ -209,12 +212,18 @@ public class UserController {
     }
 
     @PostMapping("/payCredit")
-    public ResponseEntity<Map<String, String>> payCredit(@RequestBody Map<String, Object> data) {
-        System.out.println("Datos recibidos en /payCredit: " + data);
-        String token = sessionToken.getToken(); // Obtener el token de la sesión actual
+    public ResponseEntity<Map<String, String>> payCredit(
+            @RequestHeader(value = "Authorization", required = false) String authHeader,
+            @RequestBody Map<String, Object> data) {
+        String token = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+        if (token == null || !sessionToken.isTokenValid(token)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid or missing token");
+        }
         int amount = (int) data.get("amount");
-        User user = sessionToken.getUser(); // Obtener el usuario asociado al token
-        
+        User user = sessionToken.getUser(token);
         userService.payCredit(user, amount);
 
         Map<String, String> response = Map.of("message", "Credit paid successfully");

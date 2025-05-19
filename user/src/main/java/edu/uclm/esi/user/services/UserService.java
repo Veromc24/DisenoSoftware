@@ -34,68 +34,20 @@ public class UserService {
         if (userDao.existsByName(user.getName())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists with email: " + user.getEmail());
         }
-        // Hash the password before saving using SHA-256 with salt
-        try {
-            // Generate a random salt
-            byte[] salt = new byte[16];
-            new java.security.SecureRandom().nextBytes(salt);
-            // Convert salt to hex
-            StringBuilder saltHex = new StringBuilder();
-            for (byte b : salt) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) saltHex.append('0');
-                saltHex.append(hex);
-            }
-            // Concatenate salt and password
-            String saltedPassword = saltHex.toString() + user.getPassword();
-            java.security.MessageDigest digest = java.security.MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(saltedPassword.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            StringBuilder hashHex = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hashHex.append('0');
-                hashHex.append(hex);
-            }
-            // Store salt and hash together, separated by ':'
-            String hashedPassword = saltHex.toString() + ":" + hashHex.toString();
-            user.setPassword(hashedPassword);
-        } catch (java.security.NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error hashing password", e);
-        }
 
         return userDao.save(user);
     }
 
-    /**
-     * Compares a raw password with the stored salted hash.
-     * @param rawPassword The password provided by the user.
-     * @param storedPassword The password stored in the database (salt:hash).
-     * @return true if the password matches, false otherwise.
-     */
-    
     public boolean checkPassword(String rawPassword, String storedPassword) {
-        if (storedPassword == null || !storedPassword.contains(":")) {
-            return false;
+
+        // Lógica para verificar la contraseña
+        if (rawPassword == null || storedPassword == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password cannot be null");
         }
-        String[] parts = storedPassword.split(":");
-        if (parts.length != 2) {
+        if (rawPassword.equals(storedPassword)) {
+            return true;
+        } else {
             return false;
-        }
-        String saltHex = parts[0];
-        String hashHex = parts[1];
-        try {
-            String saltedPassword = saltHex + rawPassword;
-            java.security.MessageDigest digest = java.security.MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(saltedPassword.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            StringBuilder computedHashHex = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) computedHashHex.append('0');
-                computedHashHex.append(hex);
-            }
-            return computedHashHex.toString().equals(hashHex);
-        } catch (java.security.NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error checking password", e);
         }
     }
 

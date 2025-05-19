@@ -1,6 +1,5 @@
 package edu.uclm.esi.user.services;
 
-import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +25,13 @@ public class SessionToken {
         }
     }
 
-    public User getUser(){
-        Collection<User> users = tokenStore.values(); // ← Esto accede directamente al usuario por token
-        User finalUser= new User() ;
-        for(User user:users){
-            finalUser = user;
+    public User getUser(String token) {
+        User user = tokenStore.get(token);
+        if (user == null) {
+            return null;
         }
-
-        finalUser = userDao.findByName(finalUser.getName());
-        return finalUser;
+        // Refresca desde la base de datos por si hay cambios
+        return userDao.findByName(user.getName());
     }
 
 

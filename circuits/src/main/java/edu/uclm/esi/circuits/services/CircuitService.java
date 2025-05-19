@@ -68,8 +68,19 @@ public class CircuitService {
         }
     }
 
-    public Map<String, Object> generateCode(Circuit circuit) throws Exception {
+    public Map<String, Object> generateCode(Circuit circuit, String token) throws Exception {
 
+        // Si la tabla es grande, comprobar crédito
+        if (circuit.getTable().length > 6) {
+            String checkResponse = proxyBEUsuarios.checkCredit(token);
+            if (checkResponse == null || !checkResponse.contains("Crédito verificado correctamente")) {
+                throw new ResponseStatusException(HttpStatus.PAYMENT_REQUIRED, "Crédito insuficiente");
+            }
+            String payResponse = proxyBEUsuarios.payCredit(token, 1);
+            if (payResponse == null || !payResponse.contains("Credit paid successfully")) {
+                throw new ResponseStatusException(HttpStatus.PAYMENT_REQUIRED, "No se pudo descontar el crédito");
+            }
+        }
         String templateCode = this.readFile("ibm.local.txt");
         String code = circuit.generateCode(templateCode);
 

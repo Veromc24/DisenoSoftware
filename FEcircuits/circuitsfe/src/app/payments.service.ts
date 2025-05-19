@@ -13,7 +13,7 @@ export class PaymentsService {
   }
 
   addCredit(amount: number) {
-  const url = 'http://localhost:8081/users/addCredit'; // Cambia la URL según tu backend
+  const url = 'http://localhost:8082/payments/addCredit'; // Ahora apunta al backend de payments
   return this.client.post(url, { amount });
 }
 }

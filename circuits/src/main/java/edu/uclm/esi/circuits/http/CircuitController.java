@@ -17,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import edu.uclm.esi.circuits.model.Circuit;
 import edu.uclm.esi.circuits.services.CircuitService;
-import edu.uclm.esi.circuits.services.ProxyBEUsuarios;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -45,11 +44,16 @@ public class CircuitController {
     @PostMapping("/generateCode")
     public Map<String, Object> generateCode(HttpServletRequest request, @RequestParam(required = false) String name,
             @RequestBody Circuit circuit) {
+        String token = null;
+        String authHeader = request.getHeader("Authorization");  //Esto esta mal
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
         if (name != null) {
             circuit.setName(name);
         }
         try {
-            return this.service.generateCode(circuit);
+            return this.service.generateCode(circuit, token);
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
