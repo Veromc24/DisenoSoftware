@@ -106,7 +106,6 @@ export class PaymentsComponent {
           alert('Crédito añadido a tu cuenta.');
           const currentCredits = Number(localStorage.getItem('credits')) || 0;
           localStorage.setItem('credits', (currentCredits + this.amount).toString());
-          this.creditsChanged.emit(); // Notifica al componente padre para actualizar créditos
         },
         (error) => {
           console.error('Error al añadir crédito:', error);

@@ -10,7 +10,6 @@ import { ManagerService } from '../manager.service';
 })
 export class LoginComponent {
   @Output() loginSuccess = new EventEmitter<void>();
-  @Output() creditsChanged = new EventEmitter<void>();
 
   name?: string;
   pwd?: string;
@@ -63,24 +62,6 @@ export class LoginComponent {
           (response: any) => {
             localStorage.setItem('username', this.name!);
             sessionStorage.setItem('token', response.token);
-
-            // Obtener créditos actualizados del backend
-            this.usersService.getCredits(this.name!).subscribe({
-              next: (creditsResp: { credits?: number }) => {
-                if (creditsResp.credits !== undefined) {
-                  localStorage.setItem('credits', creditsResp.credits.toString());
-                  this.creditsChanged.emit();
-                }
-              },
-              error: () => {
-                // Si falla, usa el valor del login como fallback
-                if (response && response.credits !== undefined) {
-                  localStorage.setItem('credits', response.credits.toString());
-                  this.creditsChanged.emit();
-                }
-              }
-            });
-
             this.loginSuccess.emit();
             alert('Inicio de sesión exitoso.');
           },

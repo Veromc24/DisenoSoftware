@@ -5,3 +5,96 @@ form, div {
 body, div, h2, label, input, button {
     color: inherit;
 }
+
+/* Fondo y bordes redondeados para el contenedor principal */
+div[style*="flex-direction: column"] {
+    background: #202024;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 32px 24px;
+    margin: 24px 0;
+}
+
+/* Títulos */
+h2 {
+    color: #fff;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* Botón principal */
+button {
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 12px;
+}
+
+button:hover {
+    background: #4f46e5;
+}
+
+/* Formulario de pago */
+form#payment-form {
+    background: #18181b;
+    border-radius: 12px;
+    padding: 24px 16px;
+    margin-top: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+}
+
+#card-element {
+    background: #fff;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #e5e7eb;
+}
+
+#card-error {
+    color: #ef4444;
+    font-size: 0.95rem;
+    margin-top: 8px;
+    min-height: 24px;
+}
+
+result-message {
+    color: #22c55e;
+    font-size: 1rem;
+    margin-top: 16px;
+}
+
+label {
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 6px;
+    display: block;
+}
+
+input[type="number"], input[type="text"], input[type="password"] {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    width: 100%;
+    font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+    div[style*="flex-direction: column"] {
+        max-width: 98vw;
+        padding: 16px 4px;
+    }
+    form#payment-form {
+        padding: 12px 4px;
+    }
+}

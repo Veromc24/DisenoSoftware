@@ -41,8 +41,6 @@ export class CircuitComponent {
     this.service.generateCode(this.outputQubits, this.matrix!).subscribe(
       (result: any) => {
         this.generatedCode = result.code;
-        // Emitir evento después de descontar crédito
-        this.creditsChanged.emit();
       },
       (error: any) => {
         this.generatedCode = 'Error al generar el código.';
