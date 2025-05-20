@@ -77,23 +77,18 @@ public class UserService {
 
     public boolean checkUserCredit(User user) {
         // Lógica para verificar el crédito del usuario
-        System.out.println("El nombre es: "+user.getName());
+
         int result=user.getCredit();
-        System.out.println("El credito es: "+user.getCredit());
-        System.out.println("El credito es: "+user.getName());
-        System.out.println("El credito es: "+result);
         if (result<=0) {
-            System.out.println("El credito es menor o igual a 0");
             return false;
         }else {
-            System.out.println("El credito es mayor a 0");
             return true;
         }
     }
 
     public void savePasswordRecoveryToken(String email, String token) {
         // Lógica para guardar el token en la base de datos con una expiración
-        tokenStorageService.saveToken(token, email, LocalDateTime.now().plusHours(1));
+        tokenStorageService.saveToken(token, email, LocalDateTime.now().plusMinutes(15));
 
     }
 
@@ -113,7 +108,7 @@ public class UserService {
     public void sendTokenVerify(String email) {
         // Token random generation
         String token = java.util.UUID.randomUUID().toString();
-        tokenStorageService.saveToken(token, email, LocalDateTime.now().plusHours(1));
+        tokenStorageService.saveToken(token, email, LocalDateTime.now().plusMinutes(15));
         String subject = "Email Verification";
         String body = "Your verification token is: "+token;
 
@@ -129,20 +124,16 @@ public class UserService {
         else{
             tokenStorageService.removeToken(token);
         }
-        tokenStorageService.printTokens();
         return valid;
     }
 
     public void payCredit(User user, int amount) {
         // Lógica para pagar el crédito
-        System.out.println("El nombre es: "+user.getName());
+
 
         int n=user.getCredit() - amount;
         userDao.delete(user);
         user.setCredit(n);
-        System.out.println("El nuevo credito es: "+user.getCredit());
-        System.out.println("El nuevo credito 2es: "+n);
-        System.out.println("El amount es: "+amount);
         userDao.save(user);
     }
 }

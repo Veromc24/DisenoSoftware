@@ -79,7 +79,6 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid input format");
         }
 
-        System.out.println("Nombre: " + name + ", Contraseña: " + password);
         User user = userService.getUserByName(name); // Método que busca al usuario por nombre
 
         if (user == null || !userService.checkPassword(password, user.getPassword())) {
@@ -97,7 +96,6 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<Map<String, String>> signup(@RequestBody Map<String, String> data) {
-        System.out.println("Datos recibidos en /signup: " + data);
 
         String name = data.get("name");
         String password = data.get("password");
@@ -108,12 +106,10 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing parameters");
         }
 
-        System.out.println("Nombre: " + name + ", Email: " + email + ", Contraseña: " + password);
 
         User user = new User(name, password, email);
         userService.createUser(user);
 
-        System.out.println("Usuario creado exitosamente: " + name + ", Email: " + email);
 
         // Respuesta en formato JSON
         Map<String, String> response = Map.of("message", "User created successfully");
