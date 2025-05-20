@@ -225,6 +225,7 @@ public class UserController {
         Map<String, String> response = Map.of("message", "Credit paid successfully");
         return ResponseEntity.ok(response);
     }
+    
     @GetMapping("/deleteToken")
     public ResponseEntity<Map<String, String>> deleteToken() {
         String token = sessionToken.getToken();
@@ -253,6 +254,7 @@ public class UserController {
             return ResponseEntity.ok(response);
         }
     }
+
     @GetMapping("/getEmail")
     public ResponseEntity<Map<String, String>> getEmail(@RequestParam String name) {
         User user = userService.getUserByName(name);
